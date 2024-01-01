@@ -2,7 +2,7 @@
   import { Button } from "$lib/components/ui/button";
 </script>
 
-<section class="flex min-h-[400px] flex-col items-center justify-center gap-2">
+<section class="flex h-[600px] flex-col items-center items-center justify-center gap-2">
   <h1 class="scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl">
     Procedural Marvels, Instantly.
   </h1>

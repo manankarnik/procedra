@@ -3,7 +3,7 @@
   import { Button } from "$lib/components/ui/button";
 </script>
 
-<div class="sticky top-0 border border-b backdrop-blur">
+<div class="sticky top-0 z-10 border-b bg-[hsl(var(--background))]/60 backdrop-blur">
   <div class="container flex items-center justify-between p-4">
     <div class="flex items-center justify-between gap-4">
       <h3 class="px-2 text-lg font-bold">Procedra</h3>
