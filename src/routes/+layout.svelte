@@ -1,9 +1,11 @@
 <script>
   import "../app.pcss";
   import { ModeWatcher } from "mode-watcher";
-  import DarkModeToggleButton from "$lib/components/dark-mode-toggle-button.svelte";
+  import Header from "$lib/components/header.svelte";
 </script>
 
 <ModeWatcher />
-<DarkModeToggleButton />
-<slot />
+<Header />
+<div class="container">
+  <slot />
+</div>
