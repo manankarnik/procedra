@@ -27,7 +27,7 @@
       </a>
     </div>
     <div class="flex items-center justify-between gap-4">
-      <Button variant="primary">Sign Up</Button>
+      <Button variant="primary">Sign In</Button>
       <DarkModeToggleButton />
     </div>
   </div>

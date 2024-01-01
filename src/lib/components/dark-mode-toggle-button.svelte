@@ -4,6 +4,7 @@
   import { Sun, Moon } from "lucide-svelte";
   import { setMode, resetMode } from "mode-watcher";
 </script>
+
 <DropdownMenu.Root>
   <DropdownMenu.Trigger asChild let:builder>
     <Button builders={[builder]} variant="outline" size="icon">
@@ -17,9 +18,7 @@
     </Button>
   </DropdownMenu.Trigger>
   <DropdownMenu.Content align="end">
-    <DropdownMenu.Item on:click={() => setMode("light")}>
-      Light
-    </DropdownMenu.Item>
+    <DropdownMenu.Item on:click={() => setMode("light")}>Light</DropdownMenu.Item>
     <DropdownMenu.Item on:click={() => setMode("dark")}>Dark</DropdownMenu.Item>
     <DropdownMenu.Item on:click={() => resetMode()}>System</DropdownMenu.Item>
   </DropdownMenu.Content>
