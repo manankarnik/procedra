@@ -3,6 +3,7 @@ import Google from "@auth/sveltekit/providers/google";
 import GitHub from "@auth/sveltekit/providers/github";
 import Discord from "@auth/sveltekit/providers/discord";
 import {
+  AUTH_SECRET,
   GOOGLE_ID,
   GOOGLE_SECRET,
   GITHUB_ID,
@@ -12,6 +13,8 @@ import {
 } from "$env/static/private";
 
 export const handle = SvelteKitAuth({
+  secret: AUTH_SECRET,
+  trustHost: true,
   providers: [
     Google({
       clientId: GOOGLE_ID,
