@@ -3,7 +3,8 @@
 </script>
 
 <section class="flex h-[600px] flex-col items-center items-center justify-center gap-2">
-  <h1 class="scroll-m-20 text-center text-4xl font-extrabold tracking-tight lg:text-5xl">
+  <h1 class="animate-gradient scroll-m-20 bg-gradient-to-r bg-clip-text text-center text-4xl font-extrabold tracking-tight text-transparent lg:text-5xl"
+  >
     Procedural Marvels, Instantly.
   </h1>
   <p class="text-accent-muted-fg text-center text-center text-lg">
@@ -11,6 +12,6 @@
   </p>
   <div class="my-4 flex justify-center gap-4">
     <Button variant="outline">View Assets</Button>
-    <Button>Generate Assets</Button>
+    <Button href="generate">Generate Assets</Button>
   </div>
 </section>

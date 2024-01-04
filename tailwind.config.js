@@ -56,6 +56,21 @@ const config = {
       },
       fontFamily: {
         sans: [...fontFamily.sans]
+      },
+      animation: {
+        background: "background 6s ease infinite"
+      },
+      keyframes: {
+        background: {
+          "0%, 100%": {
+            backgroundSize: "400%",
+            backgroundPosition: "1% 100%"
+          },
+          "50%": {
+            backgroundSize: "400%",
+            backgroundPosition: "99% 100%"
+          }
+        }
       }
     }
   }
