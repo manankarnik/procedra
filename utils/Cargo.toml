@@ -1,0 +1,3 @@
+[workspace]
+members = ["map", "terrain", "planet"]
+resolver = "2"

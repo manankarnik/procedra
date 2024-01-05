@@ -1,4 +1,5 @@
 <script>
+  import { goto } from "$app/navigation";
   import * as Card from "$lib/components/ui/card";
   import map from "$lib/assets/map.png";
   import terrain from "$lib/assets/terrain.png";
@@ -6,7 +7,7 @@
 
   const utils = [
     {
-      href: "texture",
+      href: "map",
       title: "Textures/Maps",
       description: "Facilitates generation of 2D textures and maps",
       logo: map
@@ -35,7 +36,7 @@
     </h1>
     <div class="grid grid-cols-3 content-stretch gap-4">
       {#each utils as util}
-        <a href="generate/{util.href}">
+        <button on:click={() => (window.location.href = `generate/${util.href}`)}>
           <Card.Root
             class="animate-gradient h-full p-[1px] hover:border-transparent hover:bg-gradient-to-r"
           >
@@ -52,7 +53,7 @@
               </Card.Content>
             </div>
           </Card.Root>
-        </a>
+        </button>
       {/each}
     </div>
   </div>

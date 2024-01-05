@@ -3,7 +3,8 @@
 </script>
 
 <section class="flex h-[600px] flex-col items-center items-center justify-center gap-2">
-  <h1 class="animate-gradient scroll-m-20 bg-gradient-to-r bg-clip-text text-center text-4xl font-extrabold tracking-tight text-transparent lg:text-5xl"
+  <h1
+    class="animate-gradient scroll-m-20 bg-gradient-to-r bg-clip-text text-center text-4xl font-extrabold tracking-tight text-transparent lg:text-5xl"
   >
     Procedural Marvels, Instantly.
   </h1>

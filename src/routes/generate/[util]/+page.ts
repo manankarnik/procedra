@@ -1,6 +1,6 @@
 import { error } from "@sveltejs/kit";
 
-const utils = ["texture", "terrain", "planet"];
+const utils = ["map", "terrain", "planet"];
 
 /** @type {import('./$types').PageLoad} */
 export function load({ params }) {

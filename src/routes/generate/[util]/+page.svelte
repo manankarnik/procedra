@@ -1,6 +1,8 @@
 <script>
+  import Util from "$lib/components/util.svelte";
+
   /** @type {import('./$types').PageData} */
   export let data;
 </script>
 
-<h1>{data.util}</h1>
+<Util util={data.util} />

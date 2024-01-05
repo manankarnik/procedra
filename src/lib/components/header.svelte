@@ -6,7 +6,7 @@
 
   const links = [
     { href: "#", text: "Browse" },
-    { href: "generate", text: "Generate" },
+    { href: "/generate", text: "Generate" },
     { href: "#", text: "Blog" }
   ];
 </script>
