@@ -6,18 +6,18 @@
 </script>
 
 <DropdownMenu.Root>
-  <DropdownMenu.Trigger asChild let:builder>
-    <Button builders={[builder]} variant="outline" size="icon">
+  <DropdownMenu.Trigger>
+    <Button variant="ghost" size="icon">
       <Sun
-        class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0"
+        class="h-[1.5rem] w-[1.5rem] dark:hidden"
       />
       <Moon
-        class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100"
+        class="h-[1.5rem] w-[1.5rem] hidden dark:block"
       />
       <span class="sr-only">Toggle theme</span>
     </Button>
   </DropdownMenu.Trigger>
-  <DropdownMenu.Content align="end">
+  <DropdownMenu.Content>
     <DropdownMenu.Item on:click={() => setMode("light")}>Light</DropdownMenu.Item>
     <DropdownMenu.Item on:click={() => setMode("dark")}>Dark</DropdownMenu.Item>
     <DropdownMenu.Item on:click={() => resetMode()}>System</DropdownMenu.Item>
