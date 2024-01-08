@@ -587,23 +587,13 @@ dependencies = [
 
 [[package]]
 name = "bevy_egui"
-version = "0.23.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "85450af551b7e1cb766f710763b60a12a82ffd6323945a8f776c6334c59ccdc1"
-dependencies = [
- "bevy",
- "egui 0.23.0",
-]
-
-[[package]]
-name = "bevy_egui"
 version = "0.24.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c90c01202dbcebc03315a01ea71553b35e1f20b0da6b1cc8c2605344032a3d96"
 dependencies = [
  "arboard",
  "bevy",
- "egui 0.24.1",
+ "egui",
  "thread_local",
  "webbrowser",
 ]
@@ -621,11 +611,9 @@ dependencies = [
 [[package]]
 name = "bevy_generative"
 version = "0.1.0"
-source = "git+https://github.com/manankarnik/bevy_generative.git#fa0b32cc75ad283d3eae82b35eacdd25280443b7"
+source = "git+https://github.com/manankarnik/bevy_generative.git#cce3f3168739bbd91c372fa0a96d278c6a648f2a"
 dependencies = [
  "bevy",
- "bevy_egui 0.24.0",
- "bevy_panorbit_camera 0.9.2",
  "colorgrad",
  "gltf",
  "image",
@@ -818,24 +806,13 @@ dependencies = [
 
 [[package]]
 name = "bevy_panorbit_camera"
-version = "0.9.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c2bfb88d07954e06001f4d38a1acdbdaed802320801d545bf4575db8ee5f0a06"
-dependencies = [
- "bevy",
- "bevy_easings",
- "bevy_egui 0.23.0",
-]
-
-[[package]]
-name = "bevy_panorbit_camera"
 version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fd9b28bdcb7d0996bc015051b1bb6b0fabf8047920ebcfc4eefe721c474d0ea4"
 dependencies = [
  "bevy",
  "bevy_easings",
- "bevy_egui 0.24.0",
+ "bevy_egui",
 ]
 
 [[package]]
@@ -1591,23 +1568,20 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-deque"
-version = "0.8.4"
+version = "0.8.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fca89a0e215bab21874660c67903c5f143333cab1da83d041c7ded6053774751"
+checksum = "613f8cc01fe9cf1a3eb3d7f488fd2fa8388403e97039e2f73692932e291a770d"
 dependencies = [
- "cfg-if",
  "crossbeam-epoch",
  "crossbeam-utils",
 ]
 
 [[package]]
 name = "crossbeam-epoch"
-version = "0.9.17"
+version = "0.9.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0e3681d554572a651dda4186cd47240627c3d0114d45a95f6ad27f2f22e7548d"
+checksum = "5b82ac4a3c2ca9c3460964f020e1402edd5753411d7737aa39c3714ad1b5420e"
 dependencies = [
- "autocfg",
- "cfg-if",
  "crossbeam-utils",
 ]
 
@@ -1672,15 +1646,6 @@ checksum = "9ea835d29036a4087793836fa931b08837ad5e957da9e23886b29586fb9b6650"
 
 [[package]]
 name = "ecolor"
-version = "0.23.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cfdf4e52dbbb615cfd30cf5a5265335c217b5fd8d669593cea74a517d9c605af"
-dependencies = [
- "bytemuck",
-]
-
-[[package]]
-name = "ecolor"
 version = "0.24.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4b7637fc2e74d17e52931bac90ff4fc061ac776ada9c7fa272f24cdca5991972"
@@ -1690,23 +1655,12 @@ dependencies = [
 
 [[package]]
 name = "egui"
-version = "0.23.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8bd69fed5fcf4fbb8225b24e80ea6193b61e17a625db105ef0c4d71dde6eb8b7"
-dependencies = [
- "ahash",
- "epaint 0.23.0",
- "nohash-hasher",
-]
-
-[[package]]
-name = "egui"
 version = "0.24.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c55bcb864b764eb889515a38b8924757657a250738ad15126637ee2df291ee6b"
 dependencies = [
  "ahash",
- "epaint 0.24.1",
+ "epaint",
  "nohash-hasher",
 ]
 
@@ -1715,15 +1669,6 @@ name = "either"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a26ae43d7bcc3b814de94796a5e736d4029efb0ee900c12e2d54c993ad1a1e07"
-
-[[package]]
-name = "emath"
-version = "0.23.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ef2b29de53074e575c18b694167ccbe6e5191f7b25fe65175a0d905a32eeec0"
-dependencies = [
- "bytemuck",
-]
 
 [[package]]
 name = "emath"
@@ -1768,21 +1713,6 @@ dependencies = [
 
 [[package]]
 name = "epaint"
-version = "0.23.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "58067b840d009143934d91d8dcb8ded054d8301d7c11a517ace0a99bb1e1595e"
-dependencies = [
- "ab_glyph",
- "ahash",
- "bytemuck",
- "ecolor 0.23.0",
- "emath 0.23.0",
- "nohash-hasher",
- "parking_lot",
-]
-
-[[package]]
-name = "epaint"
 version = "0.24.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7d1b9e000d21bab9b535ce78f9f7745be28b3f777f6c7223936561c5c7fefab8"
@@ -1790,8 +1720,8 @@ dependencies = [
  "ab_glyph",
  "ahash",
  "bytemuck",
- "ecolor 0.24.1",
- "emath 0.24.1",
+ "ecolor",
+ "emath",
  "nohash-hasher",
  "parking_lot",
 ]
@@ -2713,7 +2643,7 @@ name = "map"
 version = "0.1.0"
 dependencies = [
  "bevy",
- "bevy_egui 0.24.0",
+ "bevy_egui",
  "bevy_generative",
 ]
 
@@ -3297,9 +3227,9 @@ name = "planet"
 version = "0.1.0"
 dependencies = [
  "bevy",
- "bevy_egui 0.24.0",
+ "bevy_egui",
  "bevy_generative",
- "bevy_panorbit_camera 0.10.0",
+ "bevy_panorbit_camera",
 ]
 
 [[package]]
@@ -3819,9 +3749,9 @@ name = "terrain"
 version = "0.1.0"
 dependencies = [
  "bevy",
- "bevy_egui 0.24.0",
+ "bevy_egui",
  "bevy_generative",
- "bevy_panorbit_camera 0.10.0",
+ "bevy_panorbit_camera",
 ]
 
 [[package]]

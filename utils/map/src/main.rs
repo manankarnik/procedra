@@ -4,8 +4,8 @@ use bevy_egui::{
     EguiContexts, EguiPlugin,
 };
 use bevy_generative::{
+    map::{Map, MapBundle, MapPlugin},
     noise::{FunctionName, Method, Region},
-    noise_map::{NoiseMap, NoiseMapBundle, NoiseMapPlugin},
 };
 use egui::{ComboBox, DragValue, Slider};
 
@@ -20,7 +20,7 @@ fn main() {
             ..default()
         }))
         .add_plugins(EguiPlugin)
-        .add_plugins(NoiseMapPlugin)
+        .add_plugins(MapPlugin)
         .add_systems(Startup, setup)
         .add_systems(Update, gui)
         .run();
@@ -47,13 +47,13 @@ fn setup(mut commands: Commands) {
             ..default()
         })
         .with_children(|parent| {
-            parent.spawn(NoiseMapBundle::default());
+            parent.spawn(MapBundle::default());
         });
 }
 
-fn gui(mut contexts: EguiContexts, mut query: Query<&mut NoiseMap>) {
-    let mut noise_map = query.single_mut();
-    let texture_id = contexts.add_image(noise_map.noise.gradient.image.clone_weak());
+fn gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
+    let mut map = query.single_mut();
+    let texture_id = contexts.add_image(map.noise.gradient.image.clone_weak());
     let mut min_pos = 0.0;
 
     egui::SidePanel::left("Config").show(contexts.ctx_mut(), |ui| {
@@ -68,144 +68,134 @@ fn gui(mut contexts: EguiContexts, mut query: Query<&mut NoiseMap>) {
         ui.separator();
 
         if ui.button("Export").clicked() {
-            noise_map.export = true
+            map.export = true
         }
 
         ComboBox::from_label("Method")
-            .selected_text(noise_map.noise.method.to_string())
+            .selected_text(map.noise.method.to_string())
             .show_ui(ui, |ui| {
                 ui.selectable_value(
-                    &mut noise_map.noise.method,
+                    &mut map.noise.method,
                     Method::OpenSimplex,
                     Method::OpenSimplex.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.method,
+                    &mut map.noise.method,
                     Method::Perlin,
                     Method::Perlin.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.method,
+                    &mut map.noise.method,
                     Method::PerlinSurflet,
                     Method::PerlinSurflet.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.method,
+                    &mut map.noise.method,
                     Method::Simplex,
                     Method::Simplex.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.method,
+                    &mut map.noise.method,
                     Method::SuperSimplex,
                     Method::SuperSimplex.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.method,
+                    &mut map.noise.method,
                     Method::Value,
                     Method::Value.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.method,
+                    &mut map.noise.method,
                     Method::Worley,
                     Method::Worley.to_string(),
                 );
             });
         ui.horizontal(|ui| {
             ui.label("Seed");
-            ui.add(DragValue::new(&mut noise_map.noise.seed));
+            ui.add(DragValue::new(&mut map.noise.seed));
         });
         ui.horizontal(|ui| {
             ui.label("X");
-            ui.add(DragValue::new(&mut noise_map.noise.offset[0]));
+            ui.add(DragValue::new(&mut map.noise.offset[0]));
         });
         ui.horizontal(|ui| {
             ui.label("Y");
-            ui.add(DragValue::new(&mut noise_map.noise.offset[1]));
+            ui.add(DragValue::new(&mut map.noise.offset[1]));
         });
         ui.horizontal(|ui| {
             ui.label("Width");
-            ui.add(DragValue::new(&mut noise_map.size[0]).clamp_range(1..=10000));
+            ui.add(DragValue::new(&mut map.size[0]).clamp_range(1..=10000));
         });
         ui.horizontal(|ui| {
             ui.label("Height");
-            ui.add(DragValue::new(&mut noise_map.size[1]).clamp_range(1..=10000));
+            ui.add(DragValue::new(&mut map.size[1]).clamp_range(1..=10000));
         });
-        ui.checkbox(&mut noise_map.anti_aliasing, "Anti-aliasing");
-        ui.add(Slider::new(&mut noise_map.noise.scale, 1.0..=100.0).text("Scale"));
+        ui.checkbox(&mut map.anti_aliasing, "Anti-aliasing");
+        ui.add(Slider::new(&mut map.noise.scale, 1.0..=100.0).text("Scale"));
 
         ComboBox::from_label("Function")
-            .selected_text(
-                if let Some(function_name) = &noise_map.noise.function.name {
-                    function_name.to_string()
-                } else {
-                    "None".to_string()
-                },
-            )
+            .selected_text(if let Some(function_name) = &map.noise.function.name {
+                function_name.to_string()
+            } else {
+                "None".to_string()
+            })
             .show_ui(ui, |ui| {
-                ui.selectable_value(&mut noise_map.noise.function.name, None, "None");
+                ui.selectable_value(&mut map.noise.function.name, None, "None");
                 ui.selectable_value(
-                    &mut noise_map.noise.function.name,
+                    &mut map.noise.function.name,
                     Some(FunctionName::BasicMulti),
                     FunctionName::BasicMulti.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.function.name,
+                    &mut map.noise.function.name,
                     Some(FunctionName::Billow),
                     FunctionName::Billow.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.function.name,
+                    &mut map.noise.function.name,
                     Some(FunctionName::Fbm),
                     FunctionName::Fbm.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.function.name,
+                    &mut map.noise.function.name,
                     Some(FunctionName::HybridMulti),
                     FunctionName::HybridMulti.to_string(),
                 );
                 ui.selectable_value(
-                    &mut noise_map.noise.function.name,
+                    &mut map.noise.function.name,
                     Some(FunctionName::RidgedMulti),
                     FunctionName::RidgedMulti.to_string(),
                 );
             });
-        if let Some(_function_name) = &noise_map.noise.function.name {
-            ui.add(Slider::new(&mut noise_map.noise.function.octaves, 0..=10).text("Octaves"));
+        if let Some(_function_name) = &map.noise.function.name {
+            ui.add(Slider::new(&mut map.noise.function.octaves, 0..=10).text("Octaves"));
+            ui.add(Slider::new(&mut map.noise.function.frequency, 0.0..=10.0).text("Frequency"));
+            ui.add(Slider::new(&mut map.noise.function.lacunarity, 0.0..=30.0).text("Lacunarity"));
             ui.add(
-                Slider::new(&mut noise_map.noise.function.frequency, 0.0..=10.0).text("Frequency"),
-            );
-            ui.add(
-                Slider::new(&mut noise_map.noise.function.lacunarity, 0.0..=30.0)
-                    .text("Lacunarity"),
-            );
-            ui.add(
-                Slider::new(&mut noise_map.noise.function.persistence, 0.01..=1.0)
-                    .text("Persistence"),
+                Slider::new(&mut map.noise.function.persistence, 0.01..=1.0).text("Persistence"),
             );
         }
         ui.group(|ui| {
             ui.add(egui::widgets::Image::new(egui::load::SizedTexture::new(
                 texture_id,
                 [
-                    noise_map.noise.gradient.size[0] as f32,
-                    noise_map.noise.gradient.size[1] as f32,
+                    map.noise.gradient.size[0] as f32,
+                    map.noise.gradient.size[1] as f32,
                 ],
             )));
-            ui.add(
-                Slider::new(&mut noise_map.noise.gradient.smoothness, 0.0..=1.0).text("Smoothness"),
-            );
+            ui.add(Slider::new(&mut map.noise.gradient.smoothness, 0.0..=1.0).text("Smoothness"));
             ui.horizontal(|ui| {
                 ui.label("Segments");
-                ui.add(DragValue::new(&mut noise_map.noise.gradient.segments).clamp_range(0..=100));
+                ui.add(DragValue::new(&mut map.noise.gradient.segments).clamp_range(0..=100));
             });
             ui.horizontal(|ui| {
                 ui.label("Base Color");
-                ui.color_edit_button_srgba_unmultiplied(&mut noise_map.noise.base_color);
+                ui.color_edit_button_srgba_unmultiplied(&mut map.noise.base_color);
             });
             ui.separator();
             if ui.button("Add Region").clicked() {
-                let index = noise_map.noise.regions.len() + 1;
-                noise_map.noise.regions.push(Region {
+                let index = map.noise.regions.len() + 1;
+                map.noise.regions.push(Region {
                     label: format!("Region #{index}"),
                     position: 0.0,
                     color: [0, 0, 0, 255],
@@ -213,10 +203,10 @@ fn gui(mut contexts: EguiContexts, mut query: Query<&mut NoiseMap>) {
                 });
             }
             ui.separator();
-            let regions_len = noise_map.noise.regions.len();
+            let regions_len = map.noise.regions.len();
             let mut regions_to_remove: Vec<usize> = Vec::with_capacity(regions_len);
             egui::ScrollArea::vertical().show(ui, |ui| {
-                for (i, region) in noise_map.noise.regions.iter_mut().enumerate() {
+                for (i, region) in map.noise.regions.iter_mut().enumerate() {
                     ui.horizontal(|ui| {
                         ui.label(RichText::new(&format!("Region #{}", i + 1)).size(16.0));
                         if ui.button("Remove").clicked() {
@@ -244,7 +234,7 @@ fn gui(mut contexts: EguiContexts, mut query: Query<&mut NoiseMap>) {
                 }
             });
             for i in regions_to_remove {
-                noise_map.noise.regions.remove(i);
+                map.noise.regions.remove(i);
             }
         });
     });
