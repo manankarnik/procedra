@@ -5,4 +5,4 @@
   export let data;
 </script>
 
-<Util util={data.util} />
+<Util init={data.init} />
