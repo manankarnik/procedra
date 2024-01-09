@@ -16,7 +16,7 @@
       </Avatar.Fallback>
     </Avatar.Root>
   </Popover.Trigger>
-  <Popover.Content>
+  <Popover.Content class="w-50">
     <div class="flex items-center justify-center gap-4">
       <Avatar.Root>
         <Avatar.Image src={session.user.image} alt="Profile" />

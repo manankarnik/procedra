@@ -5,6 +5,7 @@ const config = {
   darkMode: ["class"],
   content: ["./src/**/*.{html,js,svelte,ts}"],
   safelist: ["dark"],
+  plugins: [require("tailwind-scrollbar")({ nocompatible: true })],
   theme: {
     container: {
       center: true,
@@ -58,7 +59,7 @@ const config = {
         sans: [...fontFamily.sans]
       },
       animation: {
-        background: "background 6s ease infinite"
+        background: "background 8s ease infinite"
       },
       keyframes: {
         background: {

@@ -54,13 +54,14 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply overflow-x-hidden bg-background text-foreground;
+    @apply scrollbar-thin dark:scrollbar-thumb-slate-900 dark:scrollbar-track-slate-700 scrollbar-thumb-slate-400 scrollbar-track-slate-100 scrollbar-thumb-rounded
   }
   hr {
     @apply my-4;
   }
   .gradient-primary {
-    @apply from-primary via-violet-500 to-fuchsia-500;
+    @apply from-primary via-fuchsia-500 to-indigo-500;
   }
   .animate-gradient {
     @apply gradient-primary animate-background;
