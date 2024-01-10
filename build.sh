@@ -9,4 +9,5 @@ wasm-bindgen --out-dir ../src/utils/terrain --out-name index --target web ./targ
 cargo build --release --bin planet --target wasm32-unknown-unknown
 wasm-bindgen --out-dir ../src/utils/planet --out-name index --target web ./target/wasm32-unknown-unknown/release/planet.wasm
 cd ../
+bun x prisma generate
 bun run build
