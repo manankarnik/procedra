@@ -6,7 +6,7 @@
   import MobileMenu from "$lib/components/mobile-menu.svelte";
 
   const links = [
-    { href: "#", text: "Browse" },
+    { href: "/browse", text: "Browse" },
     { href: "/generate", text: "Generate" },
     { href: "#", text: "Blog" }
   ];

@@ -21,12 +21,12 @@
         Procedural generation on the web in realtime!
       </p>
       <div class="hidden sm:flex my-4 justify-center items-center gap-4">
-        <Button variant="outline">View Assets</Button>
+        <Button href="/browse" variant="outline">View Assets</Button>
         <Button href="generate">Generate Assets</Button>
       </div>
       <div class="flex sm:hidden flex-col my-4 justify-center items-center gap-2">
-        <Button size="sm" variant="outline" class="w-[300px]">View Assets</Button>
-        <Button size="sm" href="generate" class="w-[300px]">Generate Assets</Button>
+        <Button href="/browse" size="sm" variant="outline" class="w-[300px]">View Assets</Button>
+        <Button href="generate" size="sm" class="w-[300px]">Generate Assets</Button>
       </div>
     </div>
   </div>
