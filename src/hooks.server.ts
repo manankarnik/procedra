@@ -2,6 +2,7 @@ import { SvelteKitAuth } from "@auth/sveltekit";
 import Google from "@auth/sveltekit/providers/google";
 import GitHub from "@auth/sveltekit/providers/github";
 import Discord from "@auth/sveltekit/providers/discord";
+import prisma from "$lib/prisma";
 import {
   AUTH_SECRET,
   GOOGLE_ID,
@@ -28,5 +29,14 @@ export const handle = SvelteKitAuth({
       clientId: DISCORD_ID,
       clientSecret: DISCORD_SECRET
     })
-  ]
+  ],
+  callbacks: {
+    async signIn({ user }) {
+      const existingUser = await prisma.user.findUnique({ where: { email: user.email } });
+      if (!existingUser) {
+        await prisma.user.create({ data: { email: user.email, name: user.name } });
+      }
+      return true;
+    }
+  }
 });

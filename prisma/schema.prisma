@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id    BigInt  @id @default(sequence())
+  email String  @unique
+  name  String
+  Asset Asset[]
+}
+
+model Asset {
+  id          BigInt  @id @default(sequence())
+  user        User    @relation(fields: [userId], references: [id])
+  userId      BigInt
+  title       String
+  description String
+  private     Boolean
+  type        String
+  data        Json
+}
