@@ -8,12 +8,8 @@
 <DropdownMenu.Root>
   <DropdownMenu.Trigger>
     <Button variant="ghost" size="icon">
-      <Sun
-        class="h-[1.5rem] w-[1.5rem] dark:hidden"
-      />
-      <Moon
-        class="h-[1.5rem] w-[1.5rem] hidden dark:block"
-      />
+      <Sun class="h-[1.5rem] w-[1.5rem] dark:hidden" />
+      <Moon class="hidden h-[1.5rem] w-[1.5rem] dark:block" />
       <span class="sr-only">Toggle theme</span>
     </Button>
   </DropdownMenu.Trigger>

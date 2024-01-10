@@ -30,18 +30,18 @@
 
 <section>
   <div
-    class="animate-gradient absolute top-0 z-[-10] h-[1000px] w-full bg-gradient-to-r [mask-position:_top_center] [mask-repeat:_no-repeat] [mask-size:_cover] [mask-type:_alpha]"
+    class="animate-gradient absolute top-0 h-[600px] w-[100vw] bg-gradient-to-r [mask-position:_top_center] [mask-repeat:_no-repeat] [mask-size:_cover] [mask-type:_alpha] sm:h-[1000px]"
     style="mask-image: url({background})"
   ></div>
-  <div class="z-[-10] md:h-[1000px] w-full backdrop-blur">
-    <div class="container flex md:h-[800px] items-center justify-center p-8">
+  <div class="z-[-10] w-full backdrop-blur md:h-[1000px]">
+    <div class="container flex items-center justify-center p-8 md:h-[800px]">
       <div class="flex flex-col gap-4 py-10 md:py-0">
         <h1
-          class="animate-gradient bg-gradient-to-r bg-clip-text py-2 text-2xl sm:text-3xl md:text-4xl font-extrabold text-transparent lg:text-5xl"
+          class="animate-gradient bg-gradient-to-r bg-clip-text py-2 text-2xl font-extrabold text-transparent sm:text-3xl md:text-4xl lg:text-5xl"
         >
           What would you like to create?
         </h1>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 content-stretch gap-4">
+        <div class="grid grid-cols-1 content-stretch gap-4 sm:grid-cols-2 md:grid-cols-3">
           {#each utils as util}
             <button on:click={() => (window.location.href = `generate/${util.href}`)}>
               <Card.Root
@@ -54,7 +54,7 @@
                   </Card.Header>
                   <Card.Content class="flex items-center justify-center">
                     <div
-                      class="animate-gradient h-20 md:h-40 w-full bg-gradient-to-r bg-contain [mask-position:_top_center] [mask-repeat:_no-repeat] [mask-type:_alpha] [mask-size:_contain]"
+                      class="animate-gradient h-20 w-full bg-gradient-to-r bg-contain [mask-position:_top_center] [mask-repeat:_no-repeat] [mask-type:_alpha] [mask-size:_contain] md:h-40"
                       style="mask-image: url({util.logo})"
                     ></div>
                   </Card.Content>

@@ -5,13 +5,15 @@
 
 <section>
   <div
-    class="animate-gradient absolute top-0 h-[600px] sm:h-[1000px] w-[100vw] bg-gradient-to-r [mask-position:_top_center] [mask-repeat:_no-repeat] [mask-size:_cover] [mask-type:_alpha]"
+    class="animate-gradient absolute top-0 h-[600px] w-[100vw] bg-gradient-to-r [mask-position:_top_center] [mask-repeat:_no-repeat] [mask-size:_cover] [mask-type:_alpha] sm:h-[1000px]"
     style="mask-image: url({background})"
   ></div>
-  <div class="h-[600px] sm:h-[1000px] w-full backdrop-blur">
-    <div class="container z-[10] flex h-[500px] sm:h-[700px] flex-col items-center justify-center gap-2">
+  <div class="h-[600px] w-full backdrop-blur sm:h-[1000px]">
+    <div
+      class="container z-[10] flex h-[500px] flex-col items-center justify-center gap-2 sm:h-[700px]"
+    >
       <h1
-        class="animate-gradient scroll-m-20 bg-gradient-to-r bg-clip-text py-2 sm:py-4 text-center text-2xl sm:text-4xl font-extrabold tracking-tight text-transparent lg:text-5xl"
+        class="animate-gradient scroll-m-20 bg-gradient-to-r bg-clip-text py-2 text-center text-2xl font-extrabold tracking-tight text-transparent sm:py-4 sm:text-4xl lg:text-5xl"
       >
         Procedural Marvels, Instantly.
       </h1>
