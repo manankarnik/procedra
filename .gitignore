@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 .netlify
 utils/target
 src/utils
+.direnv
