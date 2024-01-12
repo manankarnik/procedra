@@ -1,5 +1,7 @@
 <script>
-  import Util from "$lib/components/util.svelte";
+  import { page } from "$app/stores";
+  import Util from "$lib/components/generate/util.svelte";
+  import PublishPopup from "$lib/components/generate/publish-popup.svelte";
   import background from "$lib/assets/gradient.png";
 
   /** @type {import('./$types').PageData} */
@@ -14,4 +16,5 @@
   <div class="z-[-10] h-[1000px] w-full backdrop-blur">
     <Util init={data.init} />
   </div>
+  <PublishPopup util={data.util} session={$page.data.session} />
 </section>

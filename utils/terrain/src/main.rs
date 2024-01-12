@@ -1,4 +1,4 @@
-use bevy::{pbr::wireframe::WireframePlugin, prelude::*};
+use bevy::{pbr::wireframe::WireframePlugin, prelude::*, window::WindowMode};
 use bevy_egui::{
     egui::{self, RichText},
     EguiContexts, EguiPlugin,
@@ -9,29 +9,42 @@ use bevy_generative::{
 };
 use bevy_panorbit_camera::{PanOrbitCamera, PanOrbitCameraPlugin};
 use egui::{ComboBox, DragValue, Slider};
+use wasm_bindgen::prelude::wasm_bindgen;
 
-#[cfg(target_arch = "wasm32")]
-fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                canvas: Some("#bevy-canvas".into()),
-                ..default()
-            }),
-            ..default()
-        }))
-        .add_plugins(EguiPlugin)
-        .add_plugins(WireframePlugin)
-        .add_plugins(PanOrbitCameraPlugin)
-        .add_plugins(TerrainPlugin)
-        .add_systems(Startup, setup)
-        .add_systems(Update, gui)
-        .run();
+#[wasm_bindgen(raw_module = "../../lib/components/generate/publish-popup.svelte")]
+extern "C" {
+    fn recieve_asset(asset: &str);
 }
-#[cfg(not(target_arch = "wasm32"))]
+
 fn main() {
     App::new()
-        .add_plugins(DefaultPlugins)
+        .add_plugins(
+            #[cfg(not(target_arch = "wasm32"))]
+            {
+                DefaultPlugins.set(WindowPlugin {
+                    primary_window: Some(Window {
+                        resizable: true,
+                        fit_canvas_to_parent: true,
+                        mode: WindowMode::BorderlessFullscreen,
+                        ..default()
+                    }),
+                    ..default()
+                })
+            },
+            #[cfg(target_arch = "wasm32")]
+            {
+                DefaultPlugins.set(WindowPlugin {
+                    primary_window: Some(Window {
+                        canvas: Some("#bevy-canvas".into()),
+                        resizable: true,
+                        fit_canvas_to_parent: true,
+                        mode: WindowMode::BorderlessFullscreen,
+                        ..default()
+                    }),
+                    ..default()
+                })
+            },
+        )
         .add_plugins(EguiPlugin)
         .add_plugins(WireframePlugin)
         .add_plugins(PanOrbitCameraPlugin)
@@ -84,6 +97,13 @@ fn gui(mut contexts: EguiContexts, mut query: Query<&mut Terrain>) {
         ui.heading("Config");
         ui.separator();
 
+        if ui.button("Publish").clicked() {
+            {
+                recieve_asset(
+                    &serde_json::to_string::<Terrain>(&terrain).expect("Cannot serialize Terrain"),
+                );
+            }
+        }
         if ui.button("Export").clicked() {
             terrain.export = true
         }
@@ -269,4 +289,3 @@ fn gui(mut contexts: EguiContexts, mut query: Query<&mut Terrain>) {
         });
     });
 }
-

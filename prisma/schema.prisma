@@ -23,7 +23,7 @@ model Asset {
   userId      BigInt
   title       String
   description String
-  private     Boolean
+  public      Boolean
   type        String
   data        Json
 }

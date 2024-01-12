@@ -8,7 +8,7 @@ const utils = { map: init_map, terrain: init_terrain, planet: init_planet };
 /** @type {import('./$types').PageLoad} */
 export function load({ params }) {
   if (params.util in utils) {
-    return { init: utils[params.util] };
+    return { util: params.util, init: utils[params.util] };
   }
   error(404, "Not found");
 }

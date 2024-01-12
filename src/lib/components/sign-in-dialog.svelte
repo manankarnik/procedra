@@ -2,12 +2,16 @@
   import { signIn } from "@auth/sveltekit/client";
   import * as Dialog from "$lib/components/ui/dialog";
   import { Button } from "$lib/components/ui/button";
+  export let open;
+  export let showTrigger = true;
 </script>
 
-<Dialog.Root>
-  <Dialog.Trigger>
-    <Button variant="primary">Sign In</Button>
-  </Dialog.Trigger>
+<Dialog.Root {open}>
+  {#if showTrigger}
+    <Dialog.Trigger>
+      <Button variant="primary">Sign In</Button>
+    </Dialog.Trigger>
+  {/if}
   <Dialog.Content>
     <Dialog.Header>
       <Dialog.Title>Sign In</Dialog.Title>

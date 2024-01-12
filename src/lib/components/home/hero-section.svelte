@@ -20,11 +20,11 @@
       <p class="text-accent-muted-fg text-center text-center sm:text-lg">
         Procedural generation on the web in realtime!
       </p>
-      <div class="hidden sm:flex my-4 justify-center items-center gap-4">
+      <div class="my-4 hidden items-center justify-center gap-4 sm:flex">
         <Button href="/browse" variant="outline">View Assets</Button>
         <Button href="generate">Generate Assets</Button>
       </div>
-      <div class="flex sm:hidden flex-col my-4 justify-center items-center gap-2">
+      <div class="my-4 flex flex-col items-center justify-center gap-2 sm:hidden">
         <Button href="/browse" size="sm" variant="outline" class="w-[300px]">View Assets</Button>
         <Button href="generate" size="sm" class="w-[300px]">Generate Assets</Button>
       </div>

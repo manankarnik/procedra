@@ -3,9 +3,9 @@
   export let init;
 </script>
 
-<section class="flex w-full items-center justify-center p-4">
-  <div class="relative h-[720px] w-[1280px]">
-    <canvas id="bevy-canvas" width="1280" height="720" oncontextmenu="return false;" />
+<section class="container flex w-full items-center justify-center p-4">
+  <div class="relative w-full">
+    <canvas id="bevy-canvas" oncontextmenu="return false;" class="w-full" />
     {#await init()}
       <div class="absolute top-0 flex h-full w-full items-center justify-center bg-black">
         <Loader2 class="h-20 w-20 animate-spin" />
