@@ -5,7 +5,7 @@
   const publishPopup = writable(false);
   let asset;
   let thumbnail;
-  export function recieve_asset(asset_, thumbnail_) {
+  export function send_asset(asset_, thumbnail_) {
     asset = asset_;
     thumbnail = Array.from(thumbnail_);
     publishPopup.set(true);

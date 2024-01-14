@@ -13,10 +13,14 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen(raw_module = "../../lib/components/generate/publish-popup.svelte")]
 extern "C" {
-    fn recieve_asset(asset: &str, thumbnail: &[u8]);
+    fn send_asset(asset: &str, thumbnail: &[u8]);
     fn dark_theme() -> bool;
 }
 
+#[wasm_bindgen(raw_module = "../../routes/generate/[util]/+page.svelte")]
+extern "C" {
+    fn recieve_asset() -> Option<String>;
+}
 fn main() {
     App::new()
         .add_plugins(
@@ -72,7 +76,13 @@ fn setup(mut commands: Commands) {
             ..default()
         })
         .with_children(|parent| {
-            parent.spawn(MapBundle::default());
+            parent.spawn(MapBundle {
+                map: match recieve_asset() {
+                    Some(map) => serde_json::from_str(&map).expect("Could not deserialize map"),
+                    None => Map::default(),
+                },
+                ..default()
+            });
         });
 }
 
@@ -216,9 +226,9 @@ fn export_gui(
         .clone()
         .try_into_dynamic()
         .expect("Could not convert to dynamic")
-        .resize_to_fill(
-            300.min(map.image_size[0]),
-            300.min(map.image_size[1]),
+        .resize(
+            200.min(map.image_size[0]),
+            200.min(map.image_size[1]),
             if map.anti_aliasing {
                 FilterType::Triangle
             } else {
@@ -242,7 +252,7 @@ fn export_gui(
         .show(contexts.ctx_mut(), |ui| {
             #[cfg(target_arch = "wasm32")]
             if ui.button("Publish").clicked() {
-                recieve_asset(
+                send_asset(
                     &serde_json::to_string::<Map>(&map).expect("Cannot serialize Map"),
                     &thumbnail_buffer,
                 );

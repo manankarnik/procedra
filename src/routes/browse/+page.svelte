@@ -23,23 +23,32 @@
         collection of procedurally generated assets.
       </p>
     </div>
-    <div class="my-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div
+      class="my-4 columns-1 gap-4 sm:columns-2 md:columns-3 lg:columns-4"
+    >
       {#each data.assets as asset}
-        <Card.Root class="animate-gradient p-[2px] hover:border-transparent hover:bg-gradient-to-r">
-          <div class="flex h-full flex-col rounded-md bg-background">
-            <Card.Header class="flex justify-center">
-              <img src={asset.thumbnail} alt="Asset thumbnail" />
-            </Card.Header>
-            <Card.Content>
-              <Card.Title>{asset.title}</Card.Title>
-              {#if asset.description}
-                <Card.Description>{asset.description}</Card.Description>
-              {:else}
-                <Card.Description class="text-italic">No description provided</Card.Description>
-              {/if}
-            </Card.Content>
-          </div>
-        </Card.Root>
+        <button
+          on:click={() => (window.location.href = `/generate/${asset.type}?id=${asset.id}`)}
+          class="w-full my-2"
+        >
+          <Card.Root
+            class="animate-gradient p-[2px] hover:border-transparent hover:bg-gradient-to-r"
+          >
+            <div class="flex flex-col rounded-md bg-background">
+              <Card.Header class="flex justify-center">
+                <img src={asset.thumbnail} alt="Asset thumbnail" />
+              </Card.Header>
+              <Card.Content>
+                <Card.Title>{asset.title}</Card.Title>
+                {#if asset.description}
+                  <Card.Description>{asset.description}</Card.Description>
+                {:else}
+                  <Card.Description class="text-italic">No description provided</Card.Description>
+                {/if}
+              </Card.Content>
+            </div>
+          </Card.Root>
+        </button>
       {/each}
     </div>
   </div>

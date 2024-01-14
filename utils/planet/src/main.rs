@@ -13,7 +13,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen(raw_module = "../../lib/components/generate/publish-popup.svelte")]
 extern "C" {
-    fn recieve_asset(asset: &str);
+    fn send_asset(asset: &str, thumbnail: &[u8]);
 }
 
 fn main() {
@@ -96,10 +96,12 @@ fn gui(mut contexts: EguiContexts, mut query: Query<&mut Planet>) {
         ui.heading("Config");
         ui.separator();
 
+        #[cfg(target_arch = "wasm32")]
         if ui.button("Publish").clicked() {
             {
-                recieve_asset(
+                send_asset(
                     &serde_json::to_string::<Planet>(&planet).expect("Cannot serialize Planet"),
+                    &[],
                 );
             }
         }
