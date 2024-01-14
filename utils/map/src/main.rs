@@ -1,6 +1,6 @@
-use bevy::{prelude::*, window::WindowMode};
+use bevy::{core_pipeline::clear_color::ClearColorConfig, prelude::*, window::WindowMode};
 use bevy_egui::{
-    egui::{self, RichText},
+    egui::{self, RichText, TextEdit, Visuals},
     EguiContexts, EguiPlugin,
 };
 use bevy_generative::{
@@ -8,11 +8,13 @@ use bevy_generative::{
     noise::{FunctionName, Method, Region},
 };
 use egui::{ComboBox, DragValue, Slider};
+use image::{codecs::png::PngEncoder, imageops::FilterType, DynamicImage, ImageEncoder};
 use wasm_bindgen::prelude::wasm_bindgen;
 
 #[wasm_bindgen(raw_module = "../../lib/components/generate/publish-popup.svelte")]
 extern "C" {
-    fn recieve_asset(asset: &str);
+    fn recieve_asset(asset: &str, thumbnail: &[u8]);
+    fn dark_theme() -> bool;
 }
 
 fn main() {
@@ -47,18 +49,17 @@ fn main() {
         .add_plugins(EguiPlugin)
         .add_plugins(MapPlugin)
         .add_systems(Startup, setup)
-        .add_systems(Update, gui)
+        .add_systems(Update, update_background)
+        .add_systems(Update, update_theme)
+        .add_systems(Update, noise_gui)
+        .add_systems(Update, image_gui)
+        .add_systems(Update, export_gui)
+        .add_systems(Update, colors_gui)
         .run();
 }
 
 fn setup(mut commands: Commands) {
-    commands.spawn(Camera2dBundle {
-        camera_2d: Camera2d {
-            clear_color: bevy::core_pipeline::clear_color::ClearColorConfig::Custom(Color::BLACK),
-            ..default()
-        },
-        ..default()
-    });
+    commands.spawn(Camera2dBundle::default());
     commands
         .spawn(NodeBundle {
             style: Style {
@@ -75,139 +76,191 @@ fn setup(mut commands: Commands) {
         });
 }
 
-fn gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
+fn update_background(mut query: Query<&mut Camera2d>) {
+    let mut camera2d = query.single_mut();
+    if dark_theme() {
+        camera2d.clear_color = ClearColorConfig::Custom(Color::BLACK);
+    } else {
+        camera2d.clear_color = ClearColorConfig::Custom(Color::WHITE);
+    }
+}
+
+fn update_theme(mut contexts: EguiContexts) {
+    if dark_theme() {
+        contexts.ctx_mut().style_mut(|style| {
+            style.visuals = Visuals::dark();
+        });
+    } else {
+        contexts.ctx_mut().style_mut(|style| {
+            style.visuals = Visuals::light();
+        });
+    }
+}
+
+fn noise_gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
+    let mut map = query.single_mut();
+    egui::Window::new("Noise")
+        .resizable(false)
+        .show(contexts.ctx_mut(), |ui| {
+            ui.horizontal(|ui| {
+                ui.add(DragValue::new(&mut map.noise.seed));
+                ui.label("Seed");
+            });
+            ui.horizontal(|ui| {
+                ui.add(DragValue::new(&mut map.noise.offset[0]));
+                ui.label("X");
+            });
+            ui.horizontal(|ui| {
+                ui.add(DragValue::new(&mut map.noise.offset[1]));
+                ui.label("Y");
+            });
+            ui.horizontal(|ui| {
+                ui.add(DragValue::new(&mut map.size[0]).clamp_range(1..=10000));
+                ui.label("Width");
+            });
+            ui.horizontal(|ui| {
+                ui.add(DragValue::new(&mut map.size[1]).clamp_range(1..=10000));
+                ui.label("Height");
+            });
+            ui.horizontal(|ui| {
+                ui.add(DragValue::new(&mut map.noise.scale).clamp_range(1..=10000));
+                ui.label("Scale");
+            });
+            ComboBox::from_label("Method")
+                .selected_text(map.noise.method.to_string())
+                .show_ui(ui, |ui| {
+                    let methods = [
+                        Method::OpenSimplex,
+                        Method::Perlin,
+                        Method::PerlinSurflet,
+                        Method::Simplex,
+                        Method::SuperSimplex,
+                        Method::Value,
+                        Method::Worley,
+                    ];
+                    for method in methods {
+                        let text = method.to_string();
+                        ui.selectable_value(&mut map.noise.method, method, text);
+                    }
+                });
+            ComboBox::from_label("Function")
+                .selected_text(if let Some(function_name) = &map.noise.function.name {
+                    function_name.to_string()
+                } else {
+                    "None".to_string()
+                })
+                .show_ui(ui, |ui| {
+                    ui.selectable_value(&mut map.noise.function.name, None, "None");
+                    let function_names = [
+                        FunctionName::BasicMulti,
+                        FunctionName::Billow,
+                        FunctionName::Fbm,
+                        FunctionName::HybridMulti,
+                        FunctionName::RidgedMulti,
+                    ];
+                    for function_name in function_names {
+                        let text = function_name.to_string();
+                        ui.selectable_value(
+                            &mut map.noise.function.name,
+                            Some(function_name),
+                            text,
+                        );
+                    }
+                });
+            if let Some(_function_name) = &map.noise.function.name {
+                ui.add(Slider::new(&mut map.noise.function.octaves, 0..=10).text("Octaves"));
+                ui.add(
+                    Slider::new(&mut map.noise.function.frequency, 0.0..=10.0).text("Frequency"),
+                );
+                ui.add(
+                    Slider::new(&mut map.noise.function.lacunarity, 0.0..=30.0).text("Lacunarity"),
+                );
+                ui.add(
+                    Slider::new(&mut map.noise.function.persistence, 0.01..=1.0)
+                        .text("Persistence"),
+                );
+            }
+        });
+}
+
+fn image_gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
+    let mut map = query.single_mut();
+    egui::Window::new("Image")
+        .resizable(false)
+        .show(contexts.ctx_mut(), |ui| {
+            ui.horizontal(|ui| {
+                ui.add(DragValue::new(&mut map.image_size[0]).clamp_range(1..=10000));
+                ui.label("Width");
+            });
+            ui.horizontal(|ui| {
+                ui.add(DragValue::new(&mut map.image_size[1]).clamp_range(1..=10000));
+                ui.label("Height");
+            });
+            ui.checkbox(&mut map.same_size, "Same size as Noise");
+            ui.checkbox(&mut map.anti_aliasing, "Anti-aliasing");
+        });
+    if map.same_size {
+        map.image_size = map.size;
+    }
+}
+
+fn export_gui(
+    images: Res<Assets<Image>>,
+    mut contexts: EguiContexts,
+    mut query: Query<(&mut Map, &UiImage)>,
+) {
+    let (mut map, ui_image) = query.single_mut();
+    let thumbnail = images
+        .get(ui_image.texture.clone())
+        .expect("Image texture not found")
+        .clone()
+        .try_into_dynamic()
+        .expect("Could not convert to dynamic")
+        .resize_to_fill(
+            300.min(map.image_size[0]),
+            300.min(map.image_size[1]),
+            if map.anti_aliasing {
+                FilterType::Triangle
+            } else {
+                FilterType::Nearest
+            },
+        )
+        .to_rgba8();
+    let mut thumbnail_buffer: Vec<u8> = vec![];
+    let png_encoder = PngEncoder::new(&mut thumbnail_buffer);
+    let color_type = DynamicImage::from(thumbnail.clone()).color();
+    png_encoder
+        .write_image(
+            &thumbnail,
+            thumbnail.width(),
+            thumbnail.height(),
+            color_type,
+        )
+        .expect("Failed to write to png");
+    egui::Window::new("Export")
+        .resizable(false)
+        .show(contexts.ctx_mut(), |ui| {
+            #[cfg(target_arch = "wasm32")]
+            if ui.button("Publish").clicked() {
+                recieve_asset(
+                    &serde_json::to_string::<Map>(&map).expect("Cannot serialize Map"),
+                    &thumbnail_buffer,
+                );
+            }
+            if ui.button("Download").clicked() {
+                map.export = true;
+            }
+        });
+}
+
+fn colors_gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
     let mut map = query.single_mut();
     let texture_id = contexts.add_image(map.noise.gradient.image.clone_weak());
     let mut min_pos = 0.0;
-
-    egui::SidePanel::left("Config").show(contexts.ctx_mut(), |ui| {
-        ui.set_style(egui::style::Style {
-            spacing: egui::style::Spacing {
-                text_edit_width: 150.0,
-                ..default()
-            },
-            ..default()
-        });
-        ui.heading("Config");
-        ui.separator();
-
-        if ui.button("Publish").clicked() {
-            {
-                recieve_asset(&serde_json::to_string::<Map>(&map).expect("Cannot serialize Map"));
-            }
-        }
-        if ui.button("Export").clicked() {
-            map.export = true
-        }
-
-        ComboBox::from_label("Method")
-            .selected_text(map.noise.method.to_string())
-            .show_ui(ui, |ui| {
-                ui.selectable_value(
-                    &mut map.noise.method,
-                    Method::OpenSimplex,
-                    Method::OpenSimplex.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.method,
-                    Method::Perlin,
-                    Method::Perlin.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.method,
-                    Method::PerlinSurflet,
-                    Method::PerlinSurflet.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.method,
-                    Method::Simplex,
-                    Method::Simplex.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.method,
-                    Method::SuperSimplex,
-                    Method::SuperSimplex.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.method,
-                    Method::Value,
-                    Method::Value.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.method,
-                    Method::Worley,
-                    Method::Worley.to_string(),
-                );
-            });
-        ui.horizontal(|ui| {
-            ui.label("Seed");
-            ui.add(DragValue::new(&mut map.noise.seed));
-        });
-        ui.horizontal(|ui| {
-            ui.label("X");
-            ui.add(DragValue::new(&mut map.noise.offset[0]));
-        });
-        ui.horizontal(|ui| {
-            ui.label("Y");
-            ui.add(DragValue::new(&mut map.noise.offset[1]));
-        });
-        ui.horizontal(|ui| {
-            ui.label("Width");
-            ui.add(DragValue::new(&mut map.size[0]).clamp_range(1..=10000));
-        });
-        ui.horizontal(|ui| {
-            ui.label("Height");
-            ui.add(DragValue::new(&mut map.size[1]).clamp_range(1..=10000));
-        });
-        ui.checkbox(&mut map.anti_aliasing, "Anti-aliasing");
-        ui.horizontal(|ui| {
-            ui.label("Scale");
-            ui.add(DragValue::new(&mut map.noise.scale).clamp_range(1..=10000));
-        });
-
-        ComboBox::from_label("Function")
-            .selected_text(if let Some(function_name) = &map.noise.function.name {
-                function_name.to_string()
-            } else {
-                "None".to_string()
-            })
-            .show_ui(ui, |ui| {
-                ui.selectable_value(&mut map.noise.function.name, None, "None");
-                ui.selectable_value(
-                    &mut map.noise.function.name,
-                    Some(FunctionName::BasicMulti),
-                    FunctionName::BasicMulti.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.function.name,
-                    Some(FunctionName::Billow),
-                    FunctionName::Billow.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.function.name,
-                    Some(FunctionName::Fbm),
-                    FunctionName::Fbm.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.function.name,
-                    Some(FunctionName::HybridMulti),
-                    FunctionName::HybridMulti.to_string(),
-                );
-                ui.selectable_value(
-                    &mut map.noise.function.name,
-                    Some(FunctionName::RidgedMulti),
-                    FunctionName::RidgedMulti.to_string(),
-                );
-            });
-        if let Some(_function_name) = &map.noise.function.name {
-            ui.add(Slider::new(&mut map.noise.function.octaves, 0..=10).text("Octaves"));
-            ui.add(Slider::new(&mut map.noise.function.frequency, 0.0..=10.0).text("Frequency"));
-            ui.add(Slider::new(&mut map.noise.function.lacunarity, 0.0..=30.0).text("Lacunarity"));
-            ui.add(
-                Slider::new(&mut map.noise.function.persistence, 0.01..=1.0).text("Persistence"),
-            );
-        }
-        ui.group(|ui| {
+    egui::Window::new("Colors")
+        .default_width(map.noise.gradient.size[0] as f32)
+        .resizable(false)
+        .show(contexts.ctx_mut(), |ui| {
             ui.add(egui::widgets::Image::new(egui::load::SizedTexture::new(
                 texture_id,
                 [
@@ -217,12 +270,12 @@ fn gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
             )));
             ui.add(Slider::new(&mut map.noise.gradient.smoothness, 0.0..=1.0).text("Smoothness"));
             ui.horizontal(|ui| {
-                ui.label("Segments");
                 ui.add(DragValue::new(&mut map.noise.gradient.segments).clamp_range(0..=100));
+                ui.label("Segments");
             });
             ui.horizontal(|ui| {
-                ui.label("Base Color");
                 ui.color_edit_button_srgba_unmultiplied(&mut map.noise.base_color);
+                ui.label("Base Color");
             });
             ui.separator();
             if ui.button("Add Region").clicked() {
@@ -245,20 +298,20 @@ fn gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
                             regions_to_remove.push(i);
                         }
                     });
-                    ui.horizontal(|ui| {
+                    ui.vertical(|ui| {
                         ui.label("Label");
-                        ui.text_edit_singleline(&mut region.label);
+                        ui.add(TextEdit::singleline(&mut region.label).desired_width(200.0));
                     });
 
                     ui.horizontal(|ui| {
-                        ui.label("Position");
                         ui.add(DragValue::new(&mut region.position).clamp_range(min_pos..=100.0));
+                        ui.label("Position");
                     });
                     min_pos = region.position;
 
                     ui.horizontal(|ui| {
-                        ui.label("Color");
                         ui.color_edit_button_srgba_unmultiplied(&mut region.color);
+                        ui.label("Color");
                     });
                     if i != regions_len - 1 {
                         ui.separator();
@@ -269,5 +322,4 @@ fn gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
                 map.noise.regions.remove(i);
             }
         });
-    });
 }
