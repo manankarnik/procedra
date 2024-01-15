@@ -1,6 +1,6 @@
 use bevy::{core_pipeline::clear_color::ClearColorConfig, prelude::*, window::WindowMode};
 use bevy_egui::{
-    egui::{self, RichText, TextEdit, Visuals},
+    egui::{self, epaint::Shadow, RichText, TextEdit, Visuals},
     EguiContexts, EguiPlugin,
 };
 use bevy_generative::{
@@ -8,62 +8,72 @@ use bevy_generative::{
     noise::{FunctionName, Method, Region},
 };
 use egui::{ComboBox, DragValue, Slider};
+#[cfg(target_arch = "wasm32")]
 use image::{codecs::png::PngEncoder, imageops::FilterType, DynamicImage, ImageEncoder};
+#[cfg(target_arch = "wasm32")]
 use wasm_bindgen::prelude::wasm_bindgen;
 
+#[cfg(target_arch = "wasm32")]
 #[wasm_bindgen(raw_module = "../../lib/components/generate/publish-popup.svelte")]
 extern "C" {
     fn send_asset(asset: &str, thumbnail: &[u8]);
     fn dark_theme() -> bool;
 }
 
+#[cfg(target_arch = "wasm32")]
 #[wasm_bindgen(raw_module = "../../routes/generate/[util]/+page.svelte")]
 extern "C" {
     fn recieve_asset() -> Option<String>;
 }
+
 fn main() {
-    App::new()
-        .add_plugins(
-            #[cfg(not(target_arch = "wasm32"))]
-            {
-                DefaultPlugins.set(WindowPlugin {
-                    primary_window: Some(Window {
-                        resizable: true,
-                        fit_canvas_to_parent: true,
-                        mode: WindowMode::BorderlessFullscreen,
-                        ..default()
-                    }),
+    let mut app = App::new();
+    app.add_plugins(
+        #[cfg(not(target_arch = "wasm32"))]
+        {
+            DefaultPlugins.set(WindowPlugin {
+                primary_window: Some(Window {
+                    resizable: true,
+                    fit_canvas_to_parent: true,
+                    mode: WindowMode::BorderlessFullscreen,
                     ..default()
-                })
-            },
-            #[cfg(target_arch = "wasm32")]
-            {
-                DefaultPlugins.set(WindowPlugin {
-                    primary_window: Some(Window {
-                        canvas: Some("#bevy-canvas".into()),
-                        resizable: true,
-                        fit_canvas_to_parent: true,
-                        mode: WindowMode::BorderlessFullscreen,
-                        ..default()
-                    }),
+                }),
+                ..default()
+            })
+        },
+        #[cfg(target_arch = "wasm32")]
+        {
+            DefaultPlugins.set(WindowPlugin {
+                primary_window: Some(Window {
+                    canvas: Some("#bevy-canvas".into()),
+                    resizable: true,
+                    fit_canvas_to_parent: true,
+                    mode: WindowMode::BorderlessFullscreen,
                     ..default()
-                })
-            },
-        )
-        .add_plugins(EguiPlugin)
-        .add_plugins(MapPlugin)
-        .add_systems(Startup, setup)
-        .add_systems(Update, update_background)
-        .add_systems(Update, update_theme)
-        .add_systems(Update, noise_gui)
-        .add_systems(Update, image_gui)
-        .add_systems(Update, export_gui)
-        .add_systems(Update, colors_gui)
-        .run();
+                }),
+                ..default()
+            })
+        },
+    )
+    .add_plugins(EguiPlugin)
+    .add_plugins(MapPlugin)
+    .add_systems(Startup, setup)
+    .add_systems(Update, noise_gui)
+    .add_systems(Update, image_gui)
+    .add_systems(Update, export_gui)
+    .add_systems(Update, colors_gui)
+    .add_systems(Update, update_theme);
+    app.run();
 }
 
 fn setup(mut commands: Commands) {
-    commands.spawn(Camera2dBundle::default());
+    commands.spawn(Camera2dBundle {
+        camera_2d: Camera2d {
+            clear_color: ClearColorConfig::None,
+            ..default()
+        },
+        ..default()
+    });
     commands
         .spawn(NodeBundle {
             style: Style {
@@ -76,6 +86,7 @@ fn setup(mut commands: Commands) {
             ..default()
         })
         .with_children(|parent| {
+            #[cfg(target_arch = "wasm32")]
             parent.spawn(MapBundle {
                 map: match recieve_asset() {
                     Some(map) => serde_json::from_str(&map).expect("Could not deserialize map"),
@@ -83,26 +94,32 @@ fn setup(mut commands: Commands) {
                 },
                 ..default()
             });
+            #[cfg(not(target_arch = "wasm32"))]
+            parent.spawn(MapBundle::default());
         });
-}
-
-fn update_background(mut query: Query<&mut Camera2d>) {
-    let mut camera2d = query.single_mut();
-    if dark_theme() {
-        camera2d.clear_color = ClearColorConfig::Custom(Color::BLACK);
-    } else {
-        camera2d.clear_color = ClearColorConfig::Custom(Color::WHITE);
-    }
 }
 
 fn update_theme(mut contexts: EguiContexts) {
+    contexts.ctx_mut().style_mut(|style| {
+        style.visuals = Visuals {
+            window_shadow: Shadow::NONE,
+            ..Visuals::dark()
+        };
+    });
+    #[cfg(target_arch = "wasm32")]
     if dark_theme() {
         contexts.ctx_mut().style_mut(|style| {
-            style.visuals = Visuals::dark();
+            style.visuals = Visuals {
+                window_shadow: Shadow::NONE,
+                ..Visuals::dark()
+            };
         });
     } else {
         contexts.ctx_mut().style_mut(|style| {
-            style.visuals = Visuals::light();
+            style.visuals = Visuals {
+                window_shadow: Shadow::NONE,
+                ..Visuals::light()
+            };
         });
     }
 }
@@ -215,43 +232,44 @@ fn image_gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
 }
 
 fn export_gui(
-    images: Res<Assets<Image>>,
+    #[allow(unused_variables)] images: Res<Assets<Image>>,
     mut contexts: EguiContexts,
     mut query: Query<(&mut Map, &UiImage)>,
 ) {
+    #[allow(unused_variables)]
     let (mut map, ui_image) = query.single_mut();
-    let thumbnail = images
-        .get(ui_image.texture.clone())
-        .expect("Image texture not found")
-        .clone()
-        .try_into_dynamic()
-        .expect("Could not convert to dynamic")
-        .resize(
-            200.min(map.image_size[0]),
-            200.min(map.image_size[1]),
-            if map.anti_aliasing {
-                FilterType::Triangle
-            } else {
-                FilterType::Nearest
-            },
-        )
-        .to_rgba8();
-    let mut thumbnail_buffer: Vec<u8> = vec![];
-    let png_encoder = PngEncoder::new(&mut thumbnail_buffer);
-    let color_type = DynamicImage::from(thumbnail.clone()).color();
-    png_encoder
-        .write_image(
-            &thumbnail,
-            thumbnail.width(),
-            thumbnail.height(),
-            color_type,
-        )
-        .expect("Failed to write to png");
     egui::Window::new("Export")
         .resizable(false)
         .show(contexts.ctx_mut(), |ui| {
             #[cfg(target_arch = "wasm32")]
             if ui.button("Publish").clicked() {
+                let thumbnail = images
+                    .get(ui_image.texture.clone())
+                    .expect("Image texture not found")
+                    .clone()
+                    .try_into_dynamic()
+                    .expect("Could not convert to dynamic")
+                    .resize(
+                        200.min(map.image_size[0]),
+                        200.min(map.image_size[1]),
+                        if map.anti_aliasing {
+                            FilterType::Triangle
+                        } else {
+                            FilterType::Nearest
+                        },
+                    )
+                    .to_rgba8();
+                let mut thumbnail_buffer: Vec<u8> = vec![];
+                let png_encoder = PngEncoder::new(&mut thumbnail_buffer);
+                let color_type = DynamicImage::from(thumbnail.clone()).color();
+                png_encoder
+                    .write_image(
+                        &thumbnail,
+                        thumbnail.width(),
+                        thumbnail.height(),
+                        color_type,
+                    )
+                    .expect("Failed to write to png");
                 send_asset(
                     &serde_json::to_string::<Map>(&map).expect("Cannot serialize Map"),
                     &thumbnail_buffer,
