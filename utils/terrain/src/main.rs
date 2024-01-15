@@ -16,6 +16,11 @@ extern "C" {
     fn send_asset(asset: &str, thumbnail: &[u8]);
 }
 
+#[wasm_bindgen(raw_module = "../../routes/generate/[util]/+page.svelte")]
+extern "C" {
+    fn recieve_asset() -> Option<String>;
+}
+
 fn main() {
     App::new()
         .add_plugins(
@@ -77,7 +82,13 @@ fn setup(mut commands: Commands) {
         },
         PanOrbitCamera::default(),
     ));
-    commands.spawn(TerrainBundle::default());
+    commands.spawn(TerrainBundle {
+        terrain: match recieve_asset() {
+            Some(terrain) => serde_json::from_str(&terrain).expect("Could not deserialize terrain"),
+            None => Terrain::default(),
+        },
+        ..default()
+    });
 }
 
 fn gui(mut contexts: EguiContexts, mut query: Query<&mut Terrain>) {
