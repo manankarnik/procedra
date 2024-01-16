@@ -3734,6 +3734,7 @@ dependencies = [
  "bevy_egui",
  "bevy_generative",
  "bevy_panorbit_camera",
+ "image",
  "serde_json",
  "wasm-bindgen",
 ]
