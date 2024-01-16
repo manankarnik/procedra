@@ -13,7 +13,7 @@
 </script>
 
 <header class="sticky top-0 z-10 border-b bg-[hsl(var(--background))]/60 backdrop-blur">
-  <div class="container flex items-center justify-between p-4">
+  <div class="container flex items-center justify-between px-8 py-4">
     <div class="flex items-center justify-between gap-2 sm:gap-0">
       <MobileMenu {links} />
       <a href="/" class="block flex items-center justify-center">
