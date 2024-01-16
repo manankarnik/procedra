@@ -82,7 +82,6 @@ fn main() {
     .add_systems(Update, update_theme)
     .add_systems(Update, noise_gui)
     .add_systems(Update, colors_gui)
-    .add_systems(Update, gui)
     .add_systems(Update, thumbnail_gui)
     .add_systems(Update, export_gui);
     #[cfg(target_arch = "wasm32")]
