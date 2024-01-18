@@ -33,7 +33,7 @@ extern "C" {
 }
 
 #[cfg(target_arch = "wasm32")]
-#[wasm_bindgen(raw_module = "../../routes/generate/[util]/+page.svelte")]
+#[wasm_bindgen(raw_module = "../../lib/components/generate/util.svelte")]
 extern "C" {
     fn recieve_asset() -> Option<String>;
 }

@@ -5,11 +5,18 @@
   import ProfilePopover from "$lib/components/profile-popover.svelte";
   import MobileMenu from "$lib/components/mobile-menu.svelte";
 
-  const links = [
+  let links = [
     { href: "/browse", text: "Browse" },
     { href: "/generate", text: "Generate" },
-    { href: "#", text: "Blog" }
   ];
+  if ($page.data.session) {
+  links.push(
+    { href: "/manage", text: "Manage" }
+  );
+  }
+  links.push(
+    { href: "/dev", text: "For Developers" }
+    )
 </script>
 
 <header class="sticky top-0 z-10 border-b bg-[hsl(var(--background))]/60 backdrop-blur">

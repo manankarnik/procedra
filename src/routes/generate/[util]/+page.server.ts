@@ -12,7 +12,7 @@ export async function load({ params, url }) {
         asset = await prisma.asset.findUnique({ where: { id: url.searchParams.get("id") } });
       }
     }
-    return { asset: JSON.stringify(asset?.data), util: params.util };
+    return { asset: { data: JSON.stringify(asset?.data) }, util: params.util };
   }
   error(404, "Not found");
 }
