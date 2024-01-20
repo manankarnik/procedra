@@ -50,7 +50,6 @@
 
   async function publish(type) {
     const data = {
-      id: asset.id,
       title,
       description,
       public: visibility.value == "public",
@@ -60,6 +59,8 @@
     };
     if (type == "create") {
       data.userId = $page.data.userId;
+    } else {
+      data.id = asset.id;
     }
     await fetch(`/asset`, {
       method: `${type == "create" ? "POST" : "PUT"}`,
