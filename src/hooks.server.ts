@@ -34,7 +34,9 @@ export const handle = SvelteKitAuth({
     async signIn({ user }) {
       const existingUser = await prisma.user.findUnique({ where: { email: user.email } });
       if (!existingUser) {
-        await prisma.user.create({ data: { email: user.email, name: user.name, image: user.image } });
+        await prisma.user.create({
+          data: { email: user.email, name: user.name, image: user.image }
+        });
       } else if (user.name && existingUser.name != user.name) {
         await prisma.user.update({ where: { id: existingUser.id }, data: { name: user.name } });
       } else if (user.image && existingUser.image != user.image) {
@@ -42,6 +44,6 @@ export const handle = SvelteKitAuth({
       }
 
       return true;
-    },
+    }
   }
 });

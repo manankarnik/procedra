@@ -1,20 +1,39 @@
 <script>
+  import { page } from "$app/stores";
   import { User, Heart, MoreVertical, Pencil, Trash } from "lucide-svelte";
   import { Button } from "$lib/components/ui/button";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
   import * as Dialog from "$lib/components/ui/dialog";
   import * as Avatar from "$lib/components/ui/avatar";
+  import * as Tooltip from "$lib/components/ui/tooltip";
+
   export let asset;
   export let manage = false;
   let open = false;
   let title;
+  let animate;
 
   async function deleteAsset(id) {
     await fetch("/asset", { method: "DELETE", body: JSON.stringify({ id }) });
   }
+  async function changeLikeStatus() {
+    animate = true;
+    setTimeout(() => {
+      animate = false;
+    }, 250);
+    const response = await fetch("/like", {
+      method: "POST",
+      body: JSON.stringify({
+        assetId: asset.id,
+        userId: $page.data.userId
+      })
+    });
+    asset.liked = (await response.json()).liked;
+    asset.likes = asset.liked ? asset.likes + 1 : asset.likes - 1;
+  }
 </script>
 
-<div class="animate-gradient p-[4px] hover:border-transparent hover:bg-gradient-to-r rounded-xl">
+<div class="animate-gradient rounded-xl p-[4px] hover:border-transparent hover:bg-gradient-to-r">
   <div class="h-full w-full rounded-lg bg-slate-100 p-4 dark:bg-slate-900">
     <svelte:element
       this={manage ? "div" : "button"}
@@ -70,6 +89,24 @@
               </DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu.Root>
+        {:else if $page.data.userId}
+          <Tooltip.Root>
+            <Tooltip.Trigger class="flex items-center">
+              <button
+                class="rounded-md p-2 hover:bg-muted"
+                on:click|stopPropagation={changeLikeStatus}
+              >
+                {#if asset.liked}
+                  <Heart size={32} fill="red" color="red" class={animate ? "animate-ping" : ""} />
+                {:else}
+                  <Heart size={32} class={animate ? "animate-ping" : ""} />
+                {/if}
+              </button>
+            </Tooltip.Trigger>
+            <Tooltip.Content>
+              <p>{asset.liked ? "Unlike" : "Like"} this Asset</p>
+            </Tooltip.Content>
+          </Tooltip.Root>
         {/if}
       </div>
       <div>
@@ -80,9 +117,10 @@
           alt="Asset thumbnail"
         />
         <hr />
-        <div class="flex gap-2">
-          <Heart />
-          1K
+        <div class="flex items-center gap-2">
+          <Heart size={18} fill="white" />
+          {asset.likes}
+          {asset.likes == 1 ? "Like" : "Likes"}
         </div>
         <div class="md:text-md pt-2 text-start text-muted-foreground">
           {#if asset.description}

@@ -16,6 +16,7 @@ model User {
   name  String
   image String?
   Asset Asset[]
+  Like  Like[]
 }
 
 model Asset {
@@ -29,4 +30,14 @@ model Asset {
   data        Json
   thumbnail   Bytes
   deleted     Boolean @default(false)
+  Like        Like[]
+}
+
+model Like {
+  user    User   @relation(fields: [userId], references: [id])
+  asset   Asset  @relation(fields: [assetId], references: [id])
+  userId  String
+  assetId String
+
+  @@id(name: "likeId", [userId, assetId])
 }

@@ -7,7 +7,7 @@
 
 <section class="container p-8">
   <h1
-    class="lg:pb-1 animate-gradient bg-gradient-to-r bg-clip-text text-2xl font-extrabold text-transparent sm:text-3xl md:text-4xl lg:text-5xl"
+    class="animate-gradient bg-gradient-to-r bg-clip-text text-2xl font-extrabold text-transparent sm:text-3xl md:text-4xl lg:pb-1 lg:text-5xl"
   >
     Manage Assets
   </h1>

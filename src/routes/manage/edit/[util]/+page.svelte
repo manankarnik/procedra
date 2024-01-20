@@ -8,6 +8,6 @@
 </script>
 
 <section>
-  <Util util={data.util} /> 
+  <Util util={data.util} />
   <PublishPopup util={data.util} session={$page.data.session} asset={data.asset} />
 </section>

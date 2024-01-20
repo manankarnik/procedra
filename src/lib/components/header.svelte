@@ -7,16 +7,12 @@
 
   let links = [
     { href: "/browse", text: "Browse" },
-    { href: "/generate", text: "Generate" },
+    { href: "/generate", text: "Generate" }
   ];
   if ($page.data.session) {
-  links.push(
-    { href: "/manage", text: "Manage" }
-  );
+    links.push({ href: "/manage", text: "Manage" });
   }
-  links.push(
-    { href: "/dev", text: "For Developers" }
-    )
+  links.push({ href: "/dev", text: "For Developers" });
 </script>
 
 <header class="sticky top-0 z-10 border-b bg-[hsl(var(--background))]/60 backdrop-blur">

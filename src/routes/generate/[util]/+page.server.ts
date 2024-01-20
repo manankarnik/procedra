@@ -4,7 +4,6 @@ import prisma from "$lib/prisma";
 const utils = ["map", "terrain", "planet"];
 /** @type {import('./$types').PageLoad} */
 export async function load({ params, url }) {
-
   if (utils.includes(params.util)) {
     let asset;
     if (url.searchParams.get("id")) {

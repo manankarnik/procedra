@@ -17,7 +17,7 @@
       collection of procedurally generated assets.
     </p>
   </div>
-  <div class="my-4 grid grid-col-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+  <div class="grid-col-1 my-4 grid gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
     {#each data.assets as asset}
       <AssetCard {asset} />
     {/each}
