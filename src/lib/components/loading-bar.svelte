@@ -16,6 +16,7 @@
     }, 200);
   });
 </script>
+
 <div
   class={`animate-gradient absolute top-0 z-20 h-1 w-0 bg-gradient-to-r transition-[width] duration-200 ${progress} ${display}`}
 />

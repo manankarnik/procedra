@@ -1,6 +1,8 @@
 <script context="module">
   import { writable, get } from "svelte/store";
   import { mode } from "mode-watcher";
+  import { Loader2, CheckCircle2 } from "lucide-svelte";
+  import * as Alert from "$lib/components/ui/alert";
 
   const publishPopup = writable(false);
   let assetData;
@@ -32,6 +34,8 @@
   let open = false;
   $: open = $publishPopup;
 
+  let loading;
+  let alert;
   let visibilities = [
     { value: "public", label: "Public", disabled: false },
     { value: "private", label: "private", disabled: false }
@@ -49,6 +53,7 @@
     : visibilities[0];
 
   async function publish(type) {
+    loading = true;
     const data = {
       title,
       description,
@@ -66,13 +71,37 @@
       method: `${type == "create" ? "POST" : "PUT"}`,
       body: JSON.stringify(data)
     });
+    loading = false;
+    alert = true;
+    setTimeout(() => {
+      alert = false;
+    }, 2000);
     publishPopup.set(false);
-    title = "";
-    description = "";
-    visibility = { value: "public", label: "Public", disabled: false };
+    title = asset ? asset.title : null;
+    description = asset ? asset.description : null;
+    visibility = asset
+      ? visibilities.find((visibility) => {
+          if (asset.public) {
+            return visibility.value == "public";
+          } else {
+            return visibility.value == "private";
+          }
+        })
+      : visibilities[0];
   }
 </script>
 
+<div
+  class={`absolute top-20 flex h-20 w-full justify-center ${
+    alert ? "" : "hidden"
+  }`}
+>
+  <Alert.Root variant="success" class="w-30 bg-slate-100 dark:bg-slate-900">
+    <CheckCircle2 class="h-4 w-4 text-green-500" />
+    <Alert.Title>Success</Alert.Title>
+    <Alert.Description>Asset publised successfully!</Alert.Description>
+  </Alert.Root>
+</div>
 {#if session}
   <Dialog.Root {open} onOpenChange={(value) => publishPopup.set(value)} closeOnOutsideClick={false}>
     <Dialog.Content>
@@ -111,7 +140,13 @@
           <Label for="description">Description</Label>
           <Input name="description" bind:value={description} class="mt-2" />
         </div>
-        <Button type="submit">Publish</Button>
+        {#if loading}
+          <Button disabled>
+            <Loader2 class="animate-spin" />
+          </Button>
+        {:else}
+          <Button type="submit">Publish</Button>
+        {/if}
       </form>
     </Dialog.Content>
   </Dialog.Root>

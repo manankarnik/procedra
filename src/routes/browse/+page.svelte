@@ -18,7 +18,7 @@
       collection of procedurally generated assets.
     </p>
   </div>
-  <SearchFilter assets={data.assets} bind:filteredAssets={filteredAssets} />
+  <SearchFilter assets={data.assets} bind:filteredAssets />
   {#if filteredAssets.length == 0}
     <div class="m-10 flex justify-center text-xl sm:text-2xl">No Assets found :(</div>
   {:else}
