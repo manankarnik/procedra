@@ -55,14 +55,12 @@ fn main() {
             })
         },
     )
-    .add_plugins(EguiPlugin)
-    .add_plugins(MapPlugin)
+    .add_plugins((EguiPlugin, MapPlugin))
     .add_systems(Startup, setup)
-    .add_systems(Update, noise_gui)
-    .add_systems(Update, image_gui)
-    .add_systems(Update, export_gui)
-    .add_systems(Update, colors_gui)
-    .add_systems(Update, update_theme);
+    .add_systems(
+        Update,
+        (noise_gui, image_gui, export_gui, colors_gui, update_theme),
+    );
     app.run();
 }
 

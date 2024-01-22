@@ -73,16 +73,19 @@ fn main() {
             })
         },
     )
-    .add_plugins(EguiPlugin)
-    .add_plugins(PanOrbitCameraPlugin)
-    .add_plugins(PlanetPlugin)
+    .add_plugins((EguiPlugin, PanOrbitCameraPlugin, PlanetPlugin))
     .add_systems(Startup, setup)
-    .add_systems(Update, thumbnail_camera_transform)
-    .add_systems(Update, update_theme)
-    .add_systems(Update, noise_gui)
-    .add_systems(Update, colors_gui)
-    .add_systems(Update, thumbnail_gui)
-    .add_systems(Update, export_gui);
+    .add_systems(
+        Update,
+        (
+            thumbnail_camera_transform,
+            update_theme,
+            noise_gui,
+            colors_gui,
+            thumbnail_gui,
+            export_gui,
+        ),
+    );
     #[cfg(target_arch = "wasm32")]
     app.add_systems(Update, publish);
     app.run();
@@ -137,7 +140,14 @@ fn setup(mut images: ResMut<Assets<Image>>, mut commands: Commands) {
             transform: Transform::from_xyz(-2.0, 2.5, 5.0).looking_at(Vec3::ZERO, Vec3::Y),
             ..default()
         },
-        PanOrbitCamera::default(),
+        PanOrbitCamera {
+            zoom_upper_limit: Some(5.0),
+            zoom_lower_limit: Some(1.0),
+            button_orbit: MouseButton::Right,
+            button_pan: MouseButton::Right,
+            modifier_pan: Some(KeyCode::ShiftLeft),
+            ..default()
+        },
     ));
     commands.spawn(DirectionalLightBundle {
         directional_light: DirectionalLight {
