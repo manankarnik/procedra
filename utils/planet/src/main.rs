@@ -204,6 +204,7 @@ fn update_theme(mut contexts: EguiContexts) {
 fn noise_gui(mut contexts: EguiContexts, mut query: Query<&mut Planet, With<Gui>>) {
     if let Ok(mut planet) = query.get_single_mut() {
         egui::Window::new("Noise")
+            .default_open(false)
             .resizable(false)
             .show(contexts.ctx_mut(), |ui| {
                 ui.horizontal(|ui| {
@@ -290,6 +291,7 @@ fn colors_gui(mut contexts: EguiContexts, mut query: Query<&mut Planet, With<Gui
         let texture_id = contexts.add_image(planet.gradient.image.clone_weak());
         let mut min_pos = 0.0;
         egui::Window::new("Colors")
+            .default_open(false)
             .default_width(planet.gradient.size[0] as f32)
             .resizable(false)
             .show(contexts.ctx_mut(), |ui| {
@@ -379,11 +381,13 @@ fn thumbnail_gui(
 ) {
     if let Ok(_) = planet.get_single() {
         let texture_id = contexts.add_image(thumbnail.single().image_handle.clone());
-        egui::Window::new("Thumbnail").show(contexts.ctx_mut(), |ui| {
-            ui.add(egui::widgets::Image::new(egui::load::SizedTexture::new(
-                texture_id, [200.0; 2],
-            )));
-        });
+        egui::Window::new("Thumbnail")
+            .default_open(false)
+            .show(contexts.ctx_mut(), |ui| {
+                ui.add(egui::widgets::Image::new(egui::load::SizedTexture::new(
+                    texture_id, [200.0; 2],
+                )));
+            });
     }
 }
 
@@ -395,15 +399,17 @@ fn export_gui(
 ) {
     if let Ok(mut planet) = planet.get_single_mut() {
         #[allow(unused_variables)]
-        egui::Window::new("Export").show(contexts.ctx_mut(), |ui| {
-            #[cfg(target_arch = "wasm32")]
-            if ui.button("Publish").clicked() {
-                commands.entity(entity.single()).remove::<Gui>();
-            }
-            if ui.button("Export").clicked() {
-                planet.export = true
-            }
-        });
+        egui::Window::new("Export")
+            .default_open(false)
+            .show(contexts.ctx_mut(), |ui| {
+                #[cfg(target_arch = "wasm32")]
+                if ui.button("Publish").clicked() {
+                    commands.entity(entity.single()).remove::<Gui>();
+                }
+                if ui.button("Export").clicked() {
+                    planet.export = true
+                }
+            });
     }
 }
 

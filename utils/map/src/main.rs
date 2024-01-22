@@ -125,6 +125,7 @@ fn update_theme(mut contexts: EguiContexts) {
 fn noise_gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
     let mut map = query.single_mut();
     egui::Window::new("Noise")
+        .default_open(false)
         .resizable(false)
         .show(contexts.ctx_mut(), |ui| {
             ui.horizontal(|ui| {
@@ -211,6 +212,7 @@ fn noise_gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
 fn image_gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
     let mut map = query.single_mut();
     egui::Window::new("Image")
+        .default_open(false)
         .resizable(false)
         .show(contexts.ctx_mut(), |ui| {
             ui.horizontal(|ui| {
@@ -237,6 +239,7 @@ fn export_gui(
     #[allow(unused_variables)]
     let (mut map, ui_image) = query.single_mut();
     egui::Window::new("Export")
+        .default_open(false)
         .resizable(false)
         .show(contexts.ctx_mut(), |ui| {
             #[cfg(target_arch = "wasm32")]
@@ -284,6 +287,7 @@ fn colors_gui(mut contexts: EguiContexts, mut query: Query<&mut Map>) {
     let texture_id = contexts.add_image(map.noise.gradient.image.clone_weak());
     let mut min_pos = 0.0;
     egui::Window::new("Colors")
+        .default_open(false)
         .default_width(map.noise.gradient.size[0] as f32)
         .resizable(false)
         .show(contexts.ctx_mut(), |ui| {
