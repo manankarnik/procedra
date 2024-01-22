@@ -6,7 +6,7 @@
 
   export let assets;
   export let filteredAssets;
-  export let filter = true;
+  export let filter = false;
   let search = "";
   let typesList = [
     { value: "map", label: "Maps/Textures", disabled: false },

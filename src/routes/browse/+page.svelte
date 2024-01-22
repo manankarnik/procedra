@@ -1,6 +1,7 @@
 <script>
   import AssetCard from "$lib/components/asset-card.svelte";
   import SearchFilter from "$lib/components/search-filter.svelte";
+  import {page} from "$app/stores";
 
   export let data;
   let filteredAssets = data.assets;
@@ -18,7 +19,7 @@
       collection of procedurally generated assets.
     </p>
   </div>
-  <SearchFilter assets={data.assets} bind:filteredAssets />
+  <SearchFilter assets={data.assets} bind:filteredAssets filter={Boolean($page.data.session)} />
   {#if filteredAssets.length == 0}
     <div class="m-10 flex justify-center text-xl sm:text-2xl">No Assets found :(</div>
   {:else}

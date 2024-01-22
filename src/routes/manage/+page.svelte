@@ -45,7 +45,7 @@
     Manage Assets
   </h1>
   <p class="mb-2 text-muted-foreground">Edit or delete your assets</p>
-  <SearchFilter assets={data.assets} bind:filteredAssets filter={false} />
+  <SearchFilter assets={data.assets} bind:filteredAssets />
   {#if filteredAssets.length == 0}
     <div class="m-10 flex justify-center text-xl sm:text-2xl">No Assets found :(</div>
   {:else}
