@@ -4,9 +4,10 @@
   import { Button } from "$lib/components/ui/button";
   export let open =  false;
   export let showTrigger = true;
+  export let onOpenChange = () => {};
 </script>
 
-<Dialog.Root {open}>
+<Dialog.Root {open} {onOpenChange}>
   {#if showTrigger}
     <Dialog.Trigger>
       <Button variant="primary">Sign In</Button>
