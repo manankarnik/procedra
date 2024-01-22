@@ -1,7 +1,7 @@
 <script>
   import { mode } from "mode-watcher";
   let dark;
-  $: {dark = $mode == "dark" ? "dark" : ""; console.log(dark)}
+  $: dark = $mode == "dark" ? "dark" : ""
 </script>
 
 <a

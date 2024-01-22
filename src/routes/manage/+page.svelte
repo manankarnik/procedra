@@ -6,6 +6,7 @@
   import * as Alert from "$lib/components/ui/alert";
   import AssetCard from "$lib/components/asset-card.svelte";
   import SearchFilter from "$lib/components/search-filter.svelte";
+  import Footer from "$lib/components/footer.svelte";
 
   export let data;
   let filteredAssets = data.assets;
@@ -77,3 +78,4 @@
     </div>
   </Dialog.Content>
 </Dialog.Root>
+<Footer />

@@ -4,7 +4,7 @@
 </script>
 
 <section id="more">
-  <div class="h-[800px] bg-gradient-to-b from-transparent via-background via-15%">
+  <div class="bg-gradient-to-b from-transparent via-background via-15%">
     <div class="container py-40 flex items-center justify-center gap-2">
       <div>
         <h2

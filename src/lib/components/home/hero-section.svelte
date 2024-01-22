@@ -17,17 +17,17 @@
       >
         Procedural Marvels, Instantly.
       </h1>
-      <p class="text-accent-muted-fg text-center text-center sm:text-lg">
+      <p class="text-muted-foreground text-center text-center sm:text-lg">
         Procedural generation on the web in realtime!
       </p>
       <img class="mx-auto p-5 w-60 lg:w-80" src={terrain} />
       <div class="my-4 hidden items-center justify-center gap-4 sm:flex">
-        <Button href="/browse" variant="outline">View Assets</Button>
+        <Button href="/browse" variant="outline">Browse Assets</Button>
         <Button href="/generate">Generate Assets</Button>
         <Button href="#more" variant="outline">Know More</Button>
       </div>
       <div class="my-4 flex flex-col items-center justify-center gap-2 sm:hidden">
-        <Button href="/browse" size="sm" variant="outline" class="w-[300px]">View Assets</Button>
+        <Button href="/browse" size="sm" variant="outline" class="w-[300px]">Browse Assets</Button>
         <Button href="/generate" size="sm" class="w-[300px]">Generate Assets</Button>
         <Button href="#more" size="sm" variant="outline" class="w-[300px]">Know More</Button>
       </div>

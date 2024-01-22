@@ -147,12 +147,5 @@
     </Dialog.Content>
   </Dialog.Root>
 {:else}
-  <SignInDialog
-    {open}
-    onOpenChange={(value) => {
-      console.log(value);
-      publishPopup.set(value);
-    }}
-    showTrigger={false}
-  />
+  <SignInDialog {open} onOpenChange={(value) => publishPopup.set(value)} showTrigger={false} />
 {/if}

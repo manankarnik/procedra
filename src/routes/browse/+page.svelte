@@ -1,6 +1,7 @@
 <script>
   import AssetCard from "$lib/components/asset-card.svelte";
   import SearchFilter from "$lib/components/search-filter.svelte";
+  import Footer from "$lib/components/footer.svelte";
   import { page } from "$app/stores";
 
   export let data;
@@ -30,3 +31,4 @@
     </div>
   {/if}
 </section>
+<Footer />
