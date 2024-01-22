@@ -24,7 +24,7 @@
     {#if browser}
       {#await init()}
         <div
-          class="absolute top-0 flex h-full w-full items-center justify-center bg-white dark:bg-black"
+          class="absolute top-0 flex h-full w-full items-center justify-center bg-transparent"
         >
           <Loader2 class="h-20 w-20 animate-spin" />
         </div>
