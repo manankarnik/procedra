@@ -47,7 +47,7 @@
   <Input bind:value={search} placeholder="Search by title, description or user" class="my-2 gap-2">
     <Search slot="prepend" size={22} class="text-muted-foreground" />
   </Input>
-  <Select.Root multiple bind:selected={types}>
+  <Select.Root multiple bind:selected={types} preventScroll={false}>
     <Select.Trigger class="my-2 p-2">
       <div class="inline truncate text-nowrap">
         <span class="text-md rounded-md bg-accent p-1">Type</span>
@@ -61,7 +61,7 @@
     </Select.Content>
   </Select.Root>
   {#if filter}
-    <Select.Root multiple bind:selected={filters}>
+    <Select.Root multiple bind:selected={filters} preventScroll={false}>
       <Select.Trigger class="my-2 p-2">
         <div class="inline truncate text-nowrap">
           <span class="text-md rounded-md bg-accent p-1">Filter</span>

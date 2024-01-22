@@ -56,7 +56,7 @@
           {/if}
         </div>
         {#if manage}
-          <DropdownMenu.Root>
+          <DropdownMenu.Root preventScroll={false}>
             <DropdownMenu.Trigger>
               <Button variant="ghost" size="icon">
                 <MoreVertical size={18} />

@@ -1,7 +1,7 @@
 <script>
   import AssetCard from "$lib/components/asset-card.svelte";
   import SearchFilter from "$lib/components/search-filter.svelte";
-  import {page} from "$app/stores";
+  import { page } from "$app/stores";
 
   export let data;
   let filteredAssets = data.assets;

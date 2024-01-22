@@ -5,7 +5,7 @@
   import { setMode, resetMode } from "mode-watcher";
 </script>
 
-<DropdownMenu.Root>
+<DropdownMenu.Root preventScroll={false}>
   <DropdownMenu.Trigger>
     <Button variant="ghost" size="icon">
       <Sun class="h-[1.5rem] w-[1.5rem] dark:hidden" />

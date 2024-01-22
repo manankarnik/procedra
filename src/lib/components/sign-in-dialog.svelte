@@ -2,7 +2,7 @@
   import { signIn } from "@auth/sveltekit/client";
   import * as Dialog from "$lib/components/ui/dialog";
   import { Button } from "$lib/components/ui/button";
-  export let open;
+  export let open =  false;
   export let showTrigger = true;
 </script>
 
