@@ -12,4 +12,8 @@ export const load: LayoutServerLoad = async (event) => {
       secondary: user?.secondary
     };
   }
+  return {
+    primary: "fuchsia",
+    secondary: "violet"
+  };
 };
