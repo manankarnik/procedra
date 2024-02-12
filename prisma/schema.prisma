@@ -11,12 +11,14 @@ datasource db {
 }
 
 model User {
-  id    String  @id @default(uuid())
-  email String  @unique
-  name  String
-  image String?
-  Asset Asset[]
-  Like  Like[]
+  id        String  @id @default(uuid())
+  email     String  @unique
+  name      String
+  image     String?
+  primary   String  @default("fuchsia")
+  secondary String  @default("violet")
+  Asset     Asset[]
+  Like      Like[]
 }
 
 model Asset {

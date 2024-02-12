@@ -63,7 +63,7 @@
       <Dialog.Title>Delete Asset</Dialog.Title>
       <Dialog.Description>
         Are you sure you want to <span class="font-bold text-destructive">DELETE</span> the asset
-        <span class="font-bold text-primary">{currentAsset.title}</span>?
+        <span class="font-bold text-primary-color">{currentAsset.title}</span>?
       </Dialog.Description>
     </Dialog.Header>
     <div class="flex justify-end gap-4">

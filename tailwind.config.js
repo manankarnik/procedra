@@ -4,7 +4,7 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 const config = {
   darkMode: ["class"],
   content: ["./src/**/*.{html,js,svelte,ts}"],
-  safelist: ["dark"],
+  safelist: ["dark", { pattern: /^bg-/ }],
   plugins: [require("tailwind-scrollbar")({ nocompatible: true })],
   theme: {
     container: {
@@ -16,6 +16,8 @@ const config = {
     },
     extend: {
       colors: {
+        "primary-color": "var(--primary-color)",
+        "secondary-color": "var(--secondary-color)",
         border: "hsl(var(--border) / <alpha-value>)",
         input: "hsl(var(--input) / <alpha-value>)",
         ring: "hsl(var(--ring) / <alpha-value>)",

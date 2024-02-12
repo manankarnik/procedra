@@ -7,7 +7,9 @@ export const load: LayoutServerLoad = async (event) => {
     const user = await prisma.user.findUnique({ where: { email: session.user.email } });
     return {
       session: session,
-      userId: user?.id
+      userId: user?.id,
+      primary: user?.primary,
+      secondary: user?.secondary
     };
   }
 };
