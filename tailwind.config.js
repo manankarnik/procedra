@@ -5,7 +5,7 @@ const config = {
   darkMode: ["class"],
   content: ["./src/**/*.{html,js,svelte,ts}"],
   safelist: ["dark", { pattern: /^bg-/ }],
-  plugins: [require("tailwind-scrollbar")({ nocompatible: true })],
+  plugins: [require("tailwind-scrollbar")({ nocompatible: true }), require('@tailwindcss/typography')],
   theme: {
     container: {
       center: true,

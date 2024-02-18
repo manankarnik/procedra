@@ -8,16 +8,15 @@
     links.push({ href: "/manage", text: "Manage" });
   }
   links.push({ href: "/dev", text: "For Devs" });
+  links.push({ href: "https://github.com/manankarnik/procedra/releases", text: "Download" });
 </script>
 
 <footer class="bg-[hsl(var(--background))]/60 p-10 backdrop-blur">
-  <div
-    class="flex items-center justify-between gap-4"
-  >
+  <div class="flex items-center justify-between gap-4">
     <div>
       <h3 class="text-xl font-bold sm:text-2xl">Procedra</h3>
     </div>
-    <div class="grid-col-1 hidden gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
+    <div class="hidden gap-4 md:grid md:grid-cols-3 lg:grid-cols-5">
       {#each links as link}
         <a
           href={link.href}
