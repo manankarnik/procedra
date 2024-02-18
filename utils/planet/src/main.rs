@@ -383,6 +383,7 @@ fn thumbnail_gui(
         let texture_id = contexts.add_image(thumbnail.single().image_handle.clone());
         egui::Window::new("Thumbnail")
             .default_open(false)
+            .resizable(false)
             .show(contexts.ctx_mut(), |ui| {
                 ui.add(egui::widgets::Image::new(egui::load::SizedTexture::new(
                     texture_id, [200.0; 2],
@@ -401,6 +402,7 @@ fn export_gui(
         #[allow(unused_variables)]
         egui::Window::new("Export")
             .default_open(false)
+            .resizable(false)
             .show(contexts.ctx_mut(), |ui| {
                 #[cfg(target_arch = "wasm32")]
                 if ui.button("Publish").clicked() {

@@ -424,6 +424,7 @@ fn export_gui(
         #[allow(unused_variables)]
         egui::Window::new("Export")
             .default_open(false)
+            .resizable(false)
             .show(contexts.ctx_mut(), |ui| {
                 #[cfg(target_arch = "wasm32")]
                 if ui.button("Publish").clicked() {

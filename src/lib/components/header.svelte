@@ -12,7 +12,8 @@
   if ($page.data.session) {
     links.push({ href: "/manage", text: "Manage" });
   }
-  links.push({ href: "/dev", text: "For Developers" });
+  links.push({ href: "/dev", text: "For Devs" });
+  links.push({ href: "https://github.com/manankarnik/procedra/releases", text: "Download" });
 </script>
 
 <header class="sticky top-0 z-10 border-b bg-[hsl(var(--background))]/60 backdrop-blur">

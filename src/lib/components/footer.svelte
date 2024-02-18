@@ -7,7 +7,7 @@
   if ($page.data.session) {
     links.push({ href: "/manage", text: "Manage" });
   }
-  links.push({ href: "/dev", text: "For Developers" });
+  links.push({ href: "/dev", text: "For Devs" });
 </script>
 
 <footer class="bg-[hsl(var(--background))]/60 p-10 backdrop-blur">

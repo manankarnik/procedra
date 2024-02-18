@@ -17,7 +17,7 @@
     <Dialog.Header>
       <Dialog.Title>Sign In</Dialog.Title>
       <Dialog.Description>
-        Sign In to <span class="font-bold">Procedra</span> using one of the following providers
+        Sign In to <span class="text-primary-color font-bold">Procedra</span> using one of the following providers
       </Dialog.Description>
     </Dialog.Header>
     <Button
