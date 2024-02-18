@@ -8,7 +8,7 @@
 <div class="sm:hidden">
   <Sheet.Root>
     <Sheet.Trigger>
-      <Button variant="ghost" size="icon">
+      <Button variant="ghost" size="icon" aria-label="Menu">
         <Menu />
       </Button>
     </Sheet.Trigger>

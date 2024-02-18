@@ -8,6 +8,10 @@
   let filteredAssets = data.assets;
 </script>
 
+<svelte:head>
+  <title>Browse • Procedra</title>
+</svelte:head>
+
 <section class="container p-8">
   <div>
     <h1

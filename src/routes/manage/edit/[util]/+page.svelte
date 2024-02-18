@@ -7,6 +7,10 @@
   export let data;
 </script>
 
+<svelte:head>
+  <title>{data.asset.title} • Procedra</title>
+</svelte:head>
+
 <section>
   <Util util={data.util} />
   <PublishPopup util={data.util} session={$page.data.session} asset={data.asset} />

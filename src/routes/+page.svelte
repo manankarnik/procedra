@@ -4,6 +4,10 @@
   import Footer from "$lib/components/footer.svelte";
 </script>
 
+<svelte:head>
+  <title>Procedra</title>
+</svelte:head>
+
 <HeroSection />
 <InfoSection />
 <Footer />

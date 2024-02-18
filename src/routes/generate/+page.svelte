@@ -27,6 +27,10 @@
   ];
 </script>
 
+<svelte:head>
+  <title>Generate • Procedra</title>
+</svelte:head>
+
 <section>
   <div class="container flex items-center justify-center p-8 md:h-[800px]">
     <div class="flex flex-col gap-4 py-10 md:py-0">

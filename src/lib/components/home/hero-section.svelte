@@ -20,7 +20,7 @@
       <p class="text-muted-foreground text-center text-center sm:text-lg">
         Procedural generation on the web in realtime!
       </p>
-      <img class="mx-auto p-5 w-60 lg:w-80" src={terrain} />
+      <img class="mx-auto p-5 w-60 lg:w-80" width="300px" alt="Terrain" src={terrain} />
       <div class="my-4 hidden items-center justify-center gap-4 sm:flex">
         <Button href="/browse" variant="outline">Browse Assets</Button>
         <Button href="/generate">Generate Assets</Button>
