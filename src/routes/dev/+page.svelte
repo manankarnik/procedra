@@ -136,7 +136,7 @@ fn setup(mut commands: Commands) {
     <h2>Source Code and API Documentation</h2>
     <p>
       The source code for bevy_generative can be found on <a
-        href="https://github.com/manankarnik/procedra">Github</a
+        href="https://github.com/manankarnik/bevy_generative">Github</a
       >. The complete API documentation for bevy_generative, including all the customizable
       parameters, can be found <a href="https://docs.rs/bevy_generative">here</a>. Be sure to check
       it out for detailed information on how to fine-tune your procedural generation to suit your

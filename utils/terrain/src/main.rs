@@ -464,7 +464,6 @@ fn publish(
                     color_type,
                 )
                 .expect("Failed to write to png");
-            info!("{:?}", thumbnail);
             send_asset(&terrain, &thumbnail_buffer);
         });
         commands.entity(entity.single()).insert(Gui);

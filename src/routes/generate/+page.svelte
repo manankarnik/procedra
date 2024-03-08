@@ -1,5 +1,4 @@
 <script>
-  import { goto } from "$app/navigation";
   import * as Card from "$lib/components/ui/card";
   import map from "$lib/assets/map.png";
   import terrain from "$lib/assets/terrain.png";
