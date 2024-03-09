@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use bevy::{
     core_pipeline::clear_color::ClearColorConfig,
     pbr::wireframe::WireframePlugin,
@@ -54,6 +56,7 @@ fn main() {
         {
             DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
+                    title: "Terrain".to_string(),
                     resizable: true,
                     ..default()
                 }),

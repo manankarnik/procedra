@@ -1,4 +1,6 @@
-use bevy::{core_pipeline::clear_color::ClearColorConfig, prelude::*, window::WindowMode};
+#![windows_subsystem = "windows"]
+
+use bevy::{core_pipeline::clear_color::ClearColorConfig, prelude::*};
 use bevy_egui::{
     egui::{self, epaint::Shadow, RichText, TextEdit, Visuals},
     EguiContexts, EguiPlugin,
@@ -33,9 +35,9 @@ fn main() {
         {
             DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
+                    title: "Map".to_string(),
                     resizable: true,
                     fit_canvas_to_parent: true,
-                    mode: WindowMode::BorderlessFullscreen,
                     ..default()
                 }),
                 ..default()
@@ -48,7 +50,6 @@ fn main() {
                     canvas: Some("#bevy-canvas".into()),
                     resizable: true,
                     fit_canvas_to_parent: true,
-                    mode: WindowMode::BorderlessFullscreen,
                     ..default()
                 }),
                 ..default()

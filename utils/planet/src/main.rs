@@ -1,3 +1,5 @@
+#![windows_subsystem = "windows"]
+
 use bevy::{
     core_pipeline::clear_color::ClearColorConfig,
     prelude::*,
@@ -53,7 +55,7 @@ fn main() {
         {
             DefaultPlugins.set(WindowPlugin {
                 primary_window: Some(Window {
-                    transparent: true,
+                    title: "Planet".to_string(),
                     resizable: true,
                     ..default()
                 }),
