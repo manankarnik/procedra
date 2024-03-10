@@ -143,7 +143,7 @@ fn setup(mut commands: Commands) {
       needs.
     </p>
     <h2>Bevy Compatibility</h2>
-    <p>bevy_generative is compatible with Bevy 0.12.</p>
+    <p>bevy_generative is compatible with Bevy 0.12 and later versions.</p>
     <h2>Contributing</h2>
     <p>
       We're not accepting pull requests at this time, but we welcome issues, feature requests, and

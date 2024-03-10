@@ -1,6 +1,6 @@
 <script>
   import { Button } from "$lib/components/ui/button";
-  import terrain from "$lib/assets/terrain.gif";
+  import terrain from "$lib/assets/terrain.webm";
   import background from "$lib/assets/gradient.png";
 </script>
 
@@ -20,7 +20,7 @@
       <p class="text-muted-foreground text-center text-center sm:text-lg">
         Procedural generation on the web in realtime!
       </p>
-      <img class="mx-auto p-5 w-60 lg:w-80" width="300px" alt="Terrain" src={terrain} />
+      <video class="mx-auto p-3 w-60 lg:w-80" width="300px" alt="Terrain" oncontextmenu="return false;" hide-controls loop autoplay muted src={terrain} />
       <div class="my-4 hidden items-center justify-center gap-4 sm:flex">
         <Button href="/browse" variant="outline">Browse Assets</Button>
         <Button href="/generate">Generate Assets</Button>

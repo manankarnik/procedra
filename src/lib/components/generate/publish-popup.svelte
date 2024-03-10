@@ -92,7 +92,7 @@
 </script>
 
 <div class={`absolute top-20 flex h-20 w-full justify-center ${alert ? "" : "hidden"}`}>
-  <Alert.Root variant="success" class="w-30 bg-transparent backdrop-blur-xl">
+  <Alert.Root variant="success" class="w-30 backdrop-blur-xl bg-transparent">
     <CheckCircle2 class="h-4 w-4" />
     <Alert.Title>Success</Alert.Title>
     <Alert.Description>Asset publised successfully!</Alert.Description>
