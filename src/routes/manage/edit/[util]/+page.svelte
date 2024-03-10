@@ -8,7 +8,7 @@
 </script>
 
 <svelte:head>
-  <title>{data.asset.title} • Procedra</title>
+  <title>{data.asset?.title} • Procedra</title>
 </svelte:head>
 
 <section>

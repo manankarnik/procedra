@@ -114,6 +114,9 @@
         class="flex flex-col gap-4"
         on:submit={() => (asset ? publish("update") : publish("create"))}
       >
+        {#if asset}
+          <Input class="hidden" type="hidden" name="id" value={asset.id} />
+        {/if}
         <div>
           <Label for="title">
             Title<span class="text-red-500">*</span>
