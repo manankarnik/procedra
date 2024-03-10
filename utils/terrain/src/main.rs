@@ -226,12 +226,12 @@ fn noise_gui(mut contexts: EguiContexts, mut query: Query<&mut Terrain, With<Gui
                     ui.label("Y");
                 });
                 ui.horizontal(|ui| {
-                    ui.label("Width");
                     ui.add(DragValue::new(&mut terrain.size[0]).clamp_range(1..=10000));
+                    ui.label("Width");
                 });
                 ui.horizontal(|ui| {
-                    ui.label("Height");
                     ui.add(DragValue::new(&mut terrain.size[1]).clamp_range(1..=10000));
+                    ui.label("Height");
                 });
                 ui.horizontal(|ui| {
                     ui.add(DragValue::new(&mut terrain.noise.scale).clamp_range(1..=10000));
